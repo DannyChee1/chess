@@ -3,6 +3,7 @@
 #include "piece.h"
 #include "observer.h"
 #include "subject.h"
+#include "attackState.h"
 
 class Cell : public Subject, public Observer {
     Piece currentPiece;

@@ -1,6 +1,6 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
-#include "state.h"
+#include "attackState.h"
 #include "info.h"
 #include <vector>
 
@@ -22,10 +22,14 @@ class Observer;
 
 class Subject {
     std::vector<Observer*> observers;
+    attackState state;
     public:
-        void attach(Observer *o);
+        void attach(Observer *newObv);
         void notifyObservers();
         virtual Info getInfo() const = 0;
+        virtual attackState getAttackState() const = 0;
+        virtual void setAttackState(attackState newAttackState);
+
 };
 
 #endif
