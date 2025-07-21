@@ -13,7 +13,14 @@ Cell::Cell(Piece p, int r, int c) : r{r}, c{c}, currentPiece{p} {
     this->attackedbyBlack = false;
 }
 
-//write assignment copy operator later;
+void Cell::setCell(Piece p, bool Aw, bool Ab, int row, int col){
+    currentPiece = p;
+    attackedbyWhite = Aw;
+    attackedbyBlack = Ab;
+    r = row;
+    c = col;
+}
+
 
 
 Info Cell::getInfo() const{

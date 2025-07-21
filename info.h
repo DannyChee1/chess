@@ -7,7 +7,7 @@
 
 struct Info {
   int row, col;
-  bool awhite, wblack;
+  bool awhite, ablack;
   Piece curPiece;
   
 };

@@ -27,8 +27,8 @@ class Subject {
         void attach(Observer *newObv);
         void notifyObservers();
         virtual Info getInfo() const = 0;
-        virtual attackState getAttackState() const = 0;
-        virtual void setAttackState(attackState newAttackState);
+        attackState getAttackState() const;
+        void setAttackState(attackState newAttackState);
 
 };
 

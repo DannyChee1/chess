@@ -10,4 +10,6 @@ struct Piece {
     bool MovedBefore; //Has this peice moved before?
 };
 
+
+
 #endif
