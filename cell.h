@@ -15,7 +15,7 @@ class Cell : public Subject, public Observer {
         Cell(Piece p, int r, int c);
         //Cell& operator=(const Cell& other);
 
-        void setCell(Piece p, bool Aw, bool Ab, int row, int col); 
+        void setCell(Piece p, int row, int col); 
 
         void notify(Subject &sender) override;
 

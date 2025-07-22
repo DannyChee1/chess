@@ -12,7 +12,7 @@ void Board::init (std::string setupstring, int n){
     this->n = n;
     theBoard.clear();
     theBoard.resize(n);
-    td = new TextDisplay(n);
+    td = new TextDisplay(setupstring, n);
 
     for (int i = 0; i < this->n; i++){
         for (int j = 0; j < this->n; j++){
@@ -21,33 +21,37 @@ void Board::init (std::string setupstring, int n){
             char temp = setupstring[this->n * i + j];
             switch(temp){
                 case '-':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Nothing, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Nothing, false},  i, j); 
 
                 case 'p':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Black, false}, false, false, i, j); ;
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Black, false},  i, j); ;
 
                 case 'n':
-                    theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::Black, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::Black, false}, i, j); 
                 case 'b':
-                    theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::Black, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::Black, false},  i, j); 
                 case 'r':
-                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::Black, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::Black, false},  i, j); 
                 case 'q':
-                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::Black, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::Black, false},  i, j); 
                 case 'k':
-                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::Black, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::Black, false},  i, j); 
+                    rbk = i;
+                    cbk = j;
                 case 'P':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::White, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::White, false}, i, j); 
                 case 'N':
-                     theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::White, false}, false, false, i, j); 
+                     theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::White, false}, i, j); 
                 case 'B':
-                     theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::White, false}, false, false, i, j); 
+                     theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::White, false}, i, j); 
                 case 'R':
-                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::White, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::White, false},  i, j); 
                 case 'Q':
-                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::White, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::White, false},  i, j); 
                 case 'K':
-                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::White, false}, false, false, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::White, false}, i, j); 
+                    rwk = i;
+                    cwk = j;
 
             }
 
@@ -57,6 +61,50 @@ void Board::init (std::string setupstring, int n){
 
         }
     }
+
+     for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            //ifs check for edge cases relating to not having neighbours at the edges of the grid
+            if (i == 0 && j == 0){
+                for (int k = 0; k <= i + 1; k++){
+                    for (int l = 0; l <= j + 1; l++){
+                        if ( k < n && l < n && (l != j || k != i)){
+                            theBoard[i][j].attach(&(theBoard[k][l]));
+                    }
+                }
+            }
+            }else if (i == 0){
+                for (int k = 0; k <= i + 1; k++){
+                    for (int l = j - 1; l <= j + 1; l++){
+                        if ( k < n && l < n && (l != j || k != i)){
+                            theBoard[i][j].attach(&(theBoard[k][l]));
+                    }
+                }
+            }
+            }else if (j == 0){
+                for (int k = i - 1; k <= i + 1; k++){
+                    for (int l = 0; l <= j + 1; l++){
+                        if ( k < n && l < n && (l != j || k != i)){
+                            theBoard[i][j].attach(&(theBoard[k][l]));
+
+                    }
+                }
+            }
+
+            }else{
+                for (int k = i - 1; k <= i + 1; k++){
+                    for (int l = j - 1; l <= j + 1; l++){
+                        if ( k < n && l < n && (l != j || k != i)){
+                            theBoard[i][j].attach(&(theBoard[k][l]));
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 }
 
 
@@ -313,6 +361,175 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2){
 
         //I DONT WANNA DO QUEEN TOO MUCH WORK
         case PieceType::Queen:
+        if (tempC == Colour::Black){
+                if (abs(r1 - r2) ==  abs(c1 - c2)){
+                    if (r1 - r2 < 0 && c1 - c2 < 0){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 + i][c1 + i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+
+                        }
+
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black); 
+                    }
+                    else if (r1 - r2 < 0 && c1 - c2 > 0){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 + i][c1 - i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+
+                        }
+
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black); 
+                    }
+                    else if (r1 - r2 > 0 && c1 - c2 < 0){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 - i][c1 + i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black); 
+                    }
+                    else{
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 - i][c1 - i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+
+                        }
+
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black); 
+                    }
+
+                    
+                }
+                if (r1 == r2){
+                    if (c1 < c2){
+                        for (int i = 0; i < abs(c1 - c2); i++){
+                            if (theBoard[r1][c1 + i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
+                }
+
+                    else{
+                        for (int i = 0; i < abs(c1 - c2); i++){
+                            if (theBoard[r1][c1 - i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
+                }
+            }
+                else if (c1 == c2){
+                     if (r1 < r2){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 + i][c1].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
+                }
+
+                    else{
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 - i][c1].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
+                }
+                }  else{
+                    return false;
+                }
+
+            }else{
+                if (abs(r1 - r2) ==  abs(c1 - c2)){
+                    if (r1 - r2 < 0 && c1 - c2 < 0){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 + i][c1 + i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+
+                        }
+
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White); 
+                    }
+                    else if (r1 - r2 < 0 && c1 - c2 > 0){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 + i][c1 - i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+
+                        }
+
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White); 
+                    }
+                    else if (r1 - r2 > 0 && c1 - c2 < 0){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 - i][c1 + i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White); 
+                    }
+                    else{
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 - i][c1 - i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+
+                        }
+
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White); 
+                    }
+
+                    
+                }
+                if (r1 == r2){
+                    if (c1 < c2){
+                        for (int i = 0; i < abs(c1 - c2); i++){
+                            if (theBoard[r1][c1 + i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
+                }
+
+                    else{
+                        for (int i = 0; i < abs(c1 - c2); i++){
+                            if (theBoard[r1][c1 - i].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
+                }
+            }
+                else if (c1 == c2){
+                     if (r1 < r2){
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 + i][c1].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
+                }
+
+                    else{
+                        for (int i = 0; i < abs(r1 - r2); i++){
+                            if (theBoard[r1 - i][c1].getInfo().curPiece.colour != Colour::Nothing){
+                                return false;
+                            }
+                        }
+                        return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
+                }
+                }
+                else{
+                    return false;
+                }
+            }
 
         //IMPLEMENT CASTLING LATER
 
@@ -351,3 +568,82 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2){
 }
 
 
+void Board::updateBoard(){
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            theBoard[i][j].notifyObservers();
+        }
+    }
+}
+
+
+bool Board::legalBoard(Colour turn){
+    if (turn == Colour::Black){
+        return !(theBoard[rwk][rwk].getInfo().ablack);
+    }else{
+        return !(theBoard[rbk][cbk].getInfo().awhite);
+}
+
+}
+
+bool Board::isCheck(Colour turn){
+    if (turn == Colour::Black){
+
+        return !(theBoard[rbk][cbk].getInfo().awhite);
+    
+    }else{
+        return !(theBoard[rwk][cwk].getInfo().ablack);
+        
+    }
+} 
+
+
+void Board::movePiece(int r1, int c1, int r2, int c2){
+
+    if (theBoard[r1][c1].getInfo().curPiece.type == PieceType::King){
+        if(theBoard[r1][c1].getInfo().curPiece.colour == Colour::Black){
+            rbk = r2;
+            cbk = c2; 
+        }else{
+            rwk = r2;
+            cwk = c2;
+        }
+    }
+
+    theBoard[r2][c2].setCell(theBoard[r1][c1].getInfo().curPiece, r2, c2);
+    theBoard[r1][c1].setCell(Piece{PieceType::Pawn, Colour::Nothing, false}, r1, c1);
+
+    
+    updateBoard();
+
+
+}
+
+//acts as a stalemate check if isCheck is false, is a checkmate check if isCheck is true
+
+bool Board::isMate(Colour turn){
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            for (int l = 0; l < n; l++){
+                for (int k = 0; k < n; k++){
+                    if (moveCheck(i,j,l,k)){
+                        movePiece(i,j,l,k);
+                        if (legalBoard(turn)){
+                            movePiece(l,k,i,j);
+                            return false;
+                        }else{
+                            movePiece(l,k,i,j);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+}
+
+std::ostream &operator<<(std::ostream &out, const Board &b){
+    out << *(b.td);
+    return out;
+}

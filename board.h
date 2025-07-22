@@ -14,6 +14,8 @@ class Board {
     std::vector<std::vector<Cell>> theBoard;  // The actual board.
     TextDisplay *td = nullptr; // Text display observer.
     int  n; //dimensions of the board
+    int rbk, cbk; //position of black king
+    int rwk, cwk; //position of white king
 
 
 
@@ -22,8 +24,8 @@ class Board {
     ~Board();
 
     void init(std::string setupstring, int n);
-    bool isStalemate(Colour turn);
-    bool isCheckmate(Colour turn);
+    //bool isStalemate(Colour turn);
+    bool isMate(Colour turn);
     bool isCheck(Colour turn);
 
     bool moveCheck(int r1, int c1, int r2, int c2);
@@ -31,6 +33,8 @@ class Board {
     bool legalBoard(Colour turn);
 
     void movePiece(int r1, int c1, int r2, int c2);
+
+    void updateBoard();
 
     bool promote(int c, Piece peice);
 
