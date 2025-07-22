@@ -14,19 +14,22 @@ class Board {
     std::vector<std::vector<Cell>> theBoard;  // The actual board.
     TextDisplay *td = nullptr; // Text display observer.
     int  n; //dimensions of the board
-    int rbk, cbk; //position of black king
-    int rwk, cwk; //position of white king
+    int rbk, cbk = 0; //position of black king
+    int rwk, cwk = 0; //position of white king
 
 
 
   public:
 
+    Board(int n);
     ~Board();
+
 
     void init(std::string setupstring, int n);
     //bool isStalemate(Colour turn);
     bool isMate(Colour turn);
     bool isCheck(Colour turn);
+    int getDimension();
 
     bool moveCheck(int r1, int c1, int r2, int c2);
 
