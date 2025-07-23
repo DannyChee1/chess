@@ -4,7 +4,7 @@
 class Subject;
 
 class Observer {
-  public:
+public:
     virtual void notify(Subject &whoFrom) = 0;
     virtual ~Observer() = default;
 };

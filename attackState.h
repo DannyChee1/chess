@@ -1,16 +1,16 @@
 #ifndef ATTACKSTATE_H
 #define ATTACKSTATE_H
+
 #include <cstddef>
-#include "piece.h"
+#include "Piece.h"
 
-enum class attackType { none, diagonal, straight };
+enum class AttackType { None, Diagonal, Straight };
 
-struct attackState {
-  int r,c; //the coordinates of the original attacking peice 
-  Colour colour; //colour of piece attacking us
-  PieceType type; //type of peice that is attacking us
-  attackType atype; //direciton of attack
-  
+struct AttackState {
+    int r, c; // the coordinates of the original attacking piece 
+    Colour colour; // colour of piece attacking us
+    PieceType type; // type of piece that is attacking us
+    AttackType atype; // direction of attack
 };
 
 #endif

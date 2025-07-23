@@ -1,19 +1,18 @@
 #ifndef TEXTDISPLAY_H
 #define TEXTDISPLAY_H
+
 #include <iostream>
 #include <vector>
 #include <string>
-#include "observer.h"
-#include "attackState.h"
-#include "info.h"
+#include "Observer.h"
+#include "AttackState.h"
+#include "Info.h"
 
-class TextDisplay: public Observer {
+class TextDisplay : public Observer {
     std::vector<std::vector<char>> display;
     const int boardSize;
 
-
-
-  public:
+public:
     TextDisplay(std::string setupString, int n);
     void notify(Subject &sender) override;
 

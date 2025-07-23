@@ -1,4 +1,4 @@
-#include "setup.h"
+#include "Setup.h"
 
 std::string Setup::clear() {
     return "----------------------------------------------------------------";
@@ -20,32 +20,29 @@ bool Setup::isValid() {
         }
     }
     if (kingCount != 2) return false;
-    Board board {8};
+    Board board{8};
     board.init(boardString, 8);
     if (board.isCheck(Colour::Black) || board.isCheck(Colour::White)) return false;
     return true;
-    
 }
 
-std::string Setup::place(Piece placed_piece, std::string board, size_t row, size_t column) {
+std::string Setup::place(Piece placedPiece, std::string board, size_t row, size_t column) {
     char c;
-    if (placed_piece.colour == Colour::Black) {
-        if (placed_piece.type == PieceType::Pawn) c = 'p';
-        if (placed_piece.type == PieceType::Knight) c = 'k';
-        if (placed_piece.type == PieceType::Bishop) c = 'b';
-        if (placed_piece.type == PieceType::Rook) c = 'r';
-        if (placed_piece.type == PieceType::Queen) c = 'q';
-        if (placed_piece.type == PieceType::King) c = 'k';
-    }
-    else if (placed_piece.colour == Colour::Black) {
-        if (placed_piece.type == PieceType::Pawn) c = 'p';
-        if (placed_piece.type == PieceType::Knight) c = 'k';
-        if (placed_piece.type == PieceType::Bishop) c = 'b';
-        if (placed_piece.type == PieceType::Rook) c = 'r';
-        if (placed_piece.type == PieceType::Queen) c = 'q';
-        if (placed_piece.type == PieceType::King) c = 'k';
-    }
-    else c = '-';
+    if (placedPiece.colour == Colour::Black) {
+        if (placedPiece.type == PieceType::Pawn) c = 'p';
+        if (placedPiece.type == PieceType::Knight) c = 'n';
+        if (placedPiece.type == PieceType::Bishop) c = 'b';
+        if (placedPiece.type == PieceType::Rook) c = 'r';
+        if (placedPiece.type == PieceType::Queen) c = 'q';
+        if (placedPiece.type == PieceType::King) c = 'k';
+    } else if (placedPiece.colour == Colour::White) {
+        if (placedPiece.type == PieceType::Pawn) c = 'P';
+        if (placedPiece.type == PieceType::Knight) c = 'N';
+        if (placedPiece.type == PieceType::Bishop) c = 'B';
+        if (placedPiece.type == PieceType::Rook) c = 'R';
+        if (placedPiece.type == PieceType::Queen) c = 'Q';
+        if (placedPiece.type == PieceType::King) c = 'K';
+    } else c = '-';
     board[row * column] = c;
     return board;
 }
@@ -60,5 +57,5 @@ std::string Setup::defaultSetup() {
 }
 
 void Setup::setColour(Colour colour) {
-    starting_colour = colour;
+    startingColour = colour;
 }

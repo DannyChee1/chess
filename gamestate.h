@@ -1,9 +1,10 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
-#include "cell.h"
-#include "board.h"
 
-class Gamestate{
+#include "Board.h"
+#include "Setup.h"
+
+class GameState {
     Board *currBoard;
     std::vector<std::vector<Info>> history;
     int currTurn;
