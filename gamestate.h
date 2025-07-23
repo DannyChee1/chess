@@ -16,6 +16,8 @@ class GameState {
         void switchTurn();
         void resign();
         Colour hasWon();
+        Board* getBoard();
+        void setPlayerTurn(Colour colour);
 };
 
 #endif
