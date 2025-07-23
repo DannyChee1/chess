@@ -50,3 +50,11 @@ void GameState::rewind(int turns) {
 void GameState::printBoard() {
     std::cout << currBoard;
 }
+
+Board* GameState::getBoard() {
+    return currBoard;
+}
+
+void GameState::setPlayerTurn(Colour colour) {
+    playerTurn = colour;
+}
