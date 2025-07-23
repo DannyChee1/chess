@@ -11,8 +11,8 @@ class Gamestate{
     std::vector<std::vector<int>> move_history;
 
     public:
-    bool Player1IsBot;
-    bool Player2IsBot;
+    int Player1IsBot; //0 implies human plyer, otherwise implies level of bot
+    int Player2IsBot;
 
     void init(std::string startup, int n, bool p1bot, bool p2bot); //intializes game
     void switchTurn(); //switches turn
