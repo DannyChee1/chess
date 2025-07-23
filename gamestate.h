@@ -5,9 +5,10 @@
 
 class Gamestate{
     Board *currBoard;
-    std::vector<Board*> history;
+    std::vector<std::vector<Info>> history;
     int currTurn;
     Colour playerTurn;
+    std::vector<std::vector<int>> move_history;
 
     public:
     bool Player1IsBot;
@@ -15,11 +16,9 @@ class Gamestate{
 
     void init(std::string startup, int n, bool p1bot, bool p2bot); //intializes game
     void switchTurn(); //switches turn
-    void move(int r1, int c1, int r2, int c2); //calls the move function on the board
-    void resign();
-    Colour hasWon(); //returns colour of player who is currently winning
-    Board xTurnsAgo(int turns); //returns the board 
-    void Rewind(int turns); //rewinds the board by 
+    void move(int r1, int c1, int r2, int c2); //calls the move function on the board, first makes sure that this peice is colour of player who called for it
+    char hasWon(); //returns the character w,b,s,n for who is winning in the current boardstate (w for white, b for black, s for stalemate, n for neither)
+    void Rewind(int turns); //rewinds the game by amount of turns
 }
 ;
 

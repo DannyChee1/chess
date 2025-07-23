@@ -25,21 +25,26 @@ class Board {
     ~Board();
 
 
-    void init(std::string setupstring, int n);
+    void init(std::string setupstring, int n); //intializes board based on the setupstring
     //bool isStalemate(Colour turn);
-    bool isMate(Colour turn);
-    bool isCheck(Colour turn);
-    int getDimension();
+    void clear(); //turns the board compeltely empty
+    bool isMate(Colour turn); //checks if it was turns move, would the game be in check/stale mate
+    bool isCheck(Colour turn); //checks if turn is in check
+    int getDimension(); //gets n
 
-    bool moveCheck(int r1, int c1, int r2, int c2);
+    bool moveCheck(int r1, int c1, int r2, int c2, Colour turn); //checks if a move is a rule legal move
 
-    bool legalBoard(Colour turn);
+    bool legalBoard(Colour turn); //checks if a board is legal 
 
-    void movePiece(int r1, int c1, int r2, int c2);
+    bool checkLegality(int r1, int c1, int r2, int c2, Colour turn); //checks the overall legality of a move (if it is rule legal and if it leaves the board in a legal state)
 
-    void updateBoard();
+    void movePiece(int r1, int c1, int r2, int c2); //moves a piece on the board
 
-    bool promote(int c, Piece peice);
+    void updateBoard(); //calls all of the cells on the board to notify
+
+    void setPiece(int r, int c, Piece p); //sets a piece on the board
+
+    std::vector<Info> getPositions(); //gets the positions 
 
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };

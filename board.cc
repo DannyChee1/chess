@@ -36,35 +36,35 @@ void Board::init (std::string setupstring, int n){
             char temp = setupstring[this->n * i + j];
             switch(temp){
                 case '-':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Nothing, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Nothing, 0},  i, j); 
 
                 case 'p':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Black, false},  i, j); ;
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Black, 0},  i, j); ;
 
                 case 'n':
-                    theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::Black, false}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::Black, 0}, i, j); 
                 case 'b':
-                    theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::Black, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::Black, 0},  i, j); 
                 case 'r':
-                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::Black, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::Black, 0},  i, j); 
                 case 'q':
-                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::Black, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::Black, 0},  i, j); 
                 case 'k':
-                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::Black, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::Black, 0},  i, j); 
                     rbk = i;
                     cbk = j;
                 case 'P':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::White, false}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::White, 0}, i, j); 
                 case 'N':
-                     theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::White, false}, i, j); 
+                     theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::White, 0}, i, j); 
                 case 'B':
-                     theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::White, false}, i, j); 
+                     theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::White, 0}, i, j); 
                 case 'R':
-                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::White, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::White, 0},  i, j); 
                 case 'Q':
-                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::White, false},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::White, 0},  i, j); 
                 case 'K':
-                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::White, false}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::White, 0}, i, j); 
                     rwk = i;
                     cwk = j;
 
@@ -126,7 +126,7 @@ int Board::getDimension(){
     return n;
 }
 
-bool Board::moveCheck(int r1, int c1, int r2, int c2){
+bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour Turn){
     if (r1 == r2 && c1 == c2){
         return false;
     }
@@ -134,7 +134,7 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2){
         return false;
     }
     Colour tempC;
-    if (theBoard[r1][c1].getInfo().curPiece.colour == Colour::Nothing){
+    if (theBoard[r1][c1].getInfo().curPiece.colour != Turn){
         return false;
     }
     else {
@@ -585,7 +585,13 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2){
 
 }
 
-
+void Board::clear(){
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Nothing,0},i,j);
+        }
+    }
+}
 void Board::updateBoard(){
     for (int i = 0; i < n; i++){
         for (int j = 0; j < n; j++){
@@ -594,6 +600,10 @@ void Board::updateBoard(){
     }
 }
 
+void Board::setPiece(int r, int c, Piece p){
+    theBoard[r][c].setCell(p,r,c);
+    updateBoard();
+}
 
 bool Board::legalBoard(Colour turn){
     if (turn == Colour::Black){
@@ -637,6 +647,45 @@ void Board::movePiece(int r1, int c1, int r2, int c2){
 
 }
 
+//checks the legality of a potential future move.
+bool Board::checkLegality(int r1, int c1, int r2, int c2, Colour turn){
+    if (moveCheck(r1,c1,r2,c2,turn)){
+        Piece temp = theBoard[r2][c2].getInfo().curPiece; 
+        movePiece(r1,c1,r2,c2);
+        if (turn == Colour::Black){
+            if(legalBoard(Colour::White)){
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return true;
+
+            }else{
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return false;
+            }
+        } else{
+
+            if(legalBoard(Colour::Black)){
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return true;
+
+            }else{
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return false;
+            }
+        }
+
+    }
+    else{
+        return false;}
+}
+
 //acts as a stalemate check if isCheck is false, is a checkmate check if isCheck is true
 
 bool Board::isMate(Colour turn){
@@ -644,22 +693,31 @@ bool Board::isMate(Colour turn){
         for (int j = 0; j < n; j++){
             for (int l = 0; l < n; l++){
                 for (int k = 0; k < n; k++){
-                    if (moveCheck(i,j,l,k)){
-                        movePiece(i,j,l,k);
-                        if (legalBoard(turn)){
-                            movePiece(l,k,i,j);
-                            return false;
-                        }else{
-                            movePiece(l,k,i,j);
-                        }
+                    if(checkLegality(i,j,k,l,turn)){
+                        return false;
                     }
                 }
             }
         }
     }
 
+    return true;
 
 }
+
+std::vector<Info> Board::getPositions(){
+    std::vector<Info> positions;
+    for (int  i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            if (theBoard[i][j].getInfo().curPiece.colour != Colour::Nothing){
+                positions.push_back(theBoard[i][j].getInfo());
+            }
+        }
+    }
+
+    return positions;
+}
+
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
     out << *(b.td);
