@@ -56,7 +56,7 @@ int main() {
             int c2 = newtile[0] - 'a' + 1;
 
 
-            if(game.move(r1,c1,r1,c2)){
+            if(game.move(r1,c1,r1,c2))
                 game.printBoard();
             else
                 std::cerr << "bad move";
