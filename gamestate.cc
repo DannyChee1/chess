@@ -61,6 +61,7 @@ void Gamestate::Rewind(int turns){
     
 
 void Gamestate::printBoard(){
+    currBoard->updateBoard();
     std::cout << currBoard;
 
 }

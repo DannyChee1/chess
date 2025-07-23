@@ -60,10 +60,10 @@ int main()
             iss >> originaltile; 
             iss >> newtile;
 
-            int r1 = originaltile[0] - '0';
-            int c1 = originaltile[1] - 'a' + 1;
-            int r2 = newtile[0] - '0';
-            int c2 = newtile[1] - 'a' + 1;
+            int r1 = originaltile[1] - '0';
+            int c1 = originaltile[0] - 'a' + 1;
+            int r2 = newtile[1] - '0';
+            int c2 = newtile[0] - 'a' + 1;
 
 
             if(game.move(r1,c1,r1,c2)){
