@@ -1,15 +1,14 @@
 #ifndef INFO_H
 #define INFO_H
+
 #include <cstddef>
-#include "piece.h"
+#include "Piece.h"
 
-//info struct is wrapper for all neccesary information pertaining to a cell
-
+// Info struct is wrapper for all necessary information pertaining to a cell
 struct Info {
-  int row, col;
-  bool awhite, ablack;
-  Piece curPiece;
-  
+    int row, col;
+    bool aWhite, aBlack;
+    Piece curPiece;
 };
 
 #endif

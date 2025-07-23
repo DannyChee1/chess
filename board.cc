@@ -1,117 +1,113 @@
 #include <cstddef>
-#include "attackState.h"
-#include "subject.h"
-#include "observer.h"
-#include "info.h"
-#include "cell.h"
-#include "board.h"
-#include "textdisplay.h"
+#include "AttackState.h"
+#include "Subject.h"
+#include "Observer.h"
+#include "Info.h"
+#include "Cell.h"
+#include "Board.h"
+#include "TextDisplay.h"
 #include <string>
 
-Piece basic = {PieceType::Pawn, Colour::Nothing, false};
+Piece basic = {PieceType::Pawn, Colour::Nothing, 0};
 
 Board::Board(int n) : n{n} {
-    for (int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         std::vector<Cell> tempRow;
-        for (int j = 0; j < n; j++){
-            tempRow.emplace_back(basic,i,j);
-
-        }
+        for (int j = 0; j < n; j++)
+            tempRow.emplace_back(basic, i, j);
         theBoard.push_back(std::move(tempRow));
     }
     td = nullptr;
-
 } 
 
-void Board::init (std::string setupstring, int n){
+void Board::init(std::string setupString, int n) {
     this->n = n;
     theBoard.clear();
     theBoard.resize(n);
-    td = new TextDisplay(setupstring, n);
+    td = new TextDisplay(setupString, n);
 
-    for (int i = 0; i < this->n; i++){
-        for (int j = 0; j < this->n; j++){
-            theBoard[i].emplace_back(basic,i,j);
+    for (int i = 0; i < this->n; i++) {
+        for (int j = 0; j < this->n; j++) {
+            theBoard[i].emplace_back(basic, i, j);
             theBoard[i][j].attach(td);
-            char temp = setupstring[this->n * i + j];
-            switch(temp){
+            char temp = setupString[this->n * i + j];
+            switch(temp) {
                 case '-':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Nothing, 0},  i, j); 
-
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn, Colour::Nothing, 0}, i, j); 
+                    break;
                 case 'p':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::Black, 0},  i, j); ;
-
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn, Colour::Black, 0}, i, j);
+                    break;
                 case 'n':
-                    theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::Black, 0}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Knight, Colour::Black, 0}, i, j); 
+                    break;
                 case 'b':
-                    theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::Black, 0},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Bishop, Colour::Black, 0}, i, j);
+                    break; 
                 case 'r':
-                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::Black, 0},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Rook, Colour::Black, 0}, i, j);
+                    break; 
                 case 'q':
-                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::Black, 0},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Queen, Colour::Black, 0}, i, j);
+                    break; 
                 case 'k':
-                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::Black, 0},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::King, Colour::Black, 0}, i, j);
                     rbk = i;
                     cbk = j;
+                    break;
                 case 'P':
-                    theBoard[i][j].setCell(Piece{PieceType::Pawn,Colour::White, 0}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Pawn, Colour::White, 0}, i, j);
+                    break; 
                 case 'N':
-                     theBoard[i][j].setCell(Piece{PieceType::Knight,Colour::White, 0}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Knight, Colour::White, 0}, i, j);
+                    break; 
                 case 'B':
-                     theBoard[i][j].setCell(Piece{PieceType::Bishop,Colour::White, 0}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Bishop, Colour::White, 0}, i, j);
+                    break; 
                 case 'R':
-                    theBoard[i][j].setCell(Piece{PieceType::Rook,Colour::White, 0},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Rook, Colour::White, 0}, i, j);
+                    break; 
                 case 'Q':
-                    theBoard[i][j].setCell(Piece{PieceType::Queen,Colour::White, 0},  i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::Queen, Colour::White, 0}, i, j);
+                    break; 
                 case 'K':
-                    theBoard[i][j].setCell(Piece{PieceType::King,Colour::White, 0}, i, j); 
+                    theBoard[i][j].setCell(Piece{PieceType::King, Colour::White, 0}, i, j); 
                     rwk = i;
                     cwk = j;
-
+                    break;
             }
-
-
-
-            
-
         }
     }
 
-     for (int i = 0; i < n; i++){
-        for (int j = 0; j < n; j++){
-            //ifs check for edge cases relating to not having neighbours at the edges of the grid
-            if (i == 0 && j == 0){
-                for (int k = 0; k <= i + 1; k++){
-                    for (int l = 0; l <= j + 1; l++){
-                        if ( k < n && l < n && (l != j || k != i)){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            // ifs check for edge cases relating to not having neighbours at the edges of the grid
+            if (i == 0 && j == 0) {
+                for (int k = 0; k <= i + 1; k++) {
+                    for (int l = 0; l <= j + 1; l++) {
+                        if (k < n && l < n && (l != j || k != i))
                             theBoard[i][j].attach(&(theBoard[k][l]));
                     }
                 }
-            }
-            }else if (i == 0){
-                for (int k = 0; k <= i + 1; k++){
-                    for (int l = j - 1; l <= j + 1; l++){
-                        if ( k < n && l < n && (l != j || k != i)){
+            } else if (i == 0) {
+                for (int k = 0; k <= i + 1; k++) {
+                    for (int l = j - 1; l <= j + 1; l++) {
+                        if (k < n && l < n && (l != j || k != i))
                             theBoard[i][j].attach(&(theBoard[k][l]));
                     }
                 }
-            }
-            }else if (j == 0){
-                for (int k = i - 1; k <= i + 1; k++){
-                    for (int l = 0; l <= j + 1; l++){
-                        if ( k < n && l < n && (l != j || k != i)){
+            } else if (j == 0) {
+                for (int k = i - 1; k <= i + 1; k++) {
+                    for (int l = 0; l <= j + 1; l++) {
+                        if (k < n && l < n && (l != j || k != i))
                             theBoard[i][j].attach(&(theBoard[k][l]));
-
                     }
                 }
-            }
-
-            }else{
-                for (int k = i - 1; k <= i + 1; k++){
-                    for (int l = j - 1; l <= j + 1; l++){
-                        if ( k < n && l < n && (l != j || k != i)){
+            } else {
+                for (int k = i - 1; k <= i + 1; k++) {
+                    for (int l = j - 1; l <= j + 1; l++) {
+                        if (k < n && l < n && (l != j || k != i))
                             theBoard[i][j].attach(&(theBoard[k][l]));
-
                     }
                 }
             }
@@ -119,76 +115,58 @@ void Board::init (std::string setupstring, int n){
     }
 }
 
-
-}
-
-int Board::getDimension(){
+int Board::getDimension() {
     return n;
 }
 
-bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour Turn){
-    if (r1 == r2 && c1 == c2){
+bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
+    if (r1 == r2 && c1 == c2)
         return false;
-    }
-    else if (r1 >= n || r2 >= n  || c1 >= n  || c2 >= n){
+    else if (r1 >= n || r2 >= n || c1 >= n || c2 >= n)
         return false;
-    }
+    
     Colour tempC;
-    if (theBoard[r1][c1].getInfo().curPiece.colour != Turn){
+    if (theBoard[r1][c1].getInfo().curPiece.colour != turn)
         return false;
-    }
-    else {
+    else
         tempC = theBoard[r1][c1].getInfo().curPiece.colour;
-    }
 
     switch(theBoard[r1][c1].getInfo().curPiece.type){
 
 
         //IMPLEMENT EN PESSANT AND TWO MOVE LATER
         case PieceType::Pawn:
-            if (tempC == Colour::Black){
-                if (r1 == r2 + 1 && c1 == c2){
+            if (tempC == Colour::Black) {
+                if (r1 == r2 + 1 && c1 == c2)
                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing);
-                }
-                else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
-                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White);
-                }else{
+                else if (r1 == r2 + 1 && abs(c1 - c2) == 1)
+                    return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White);
+                else
                     return false;
-                }
-
-            }else{
-                if (r1 == r2 - 1 && c1 == c2){
+            } else {
+                if (r1 == r2 - 1 && c1 == c2)
                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing);
-                }
-                else if (r1 == r2 - 1 && abs(c1 - c2) == 1){
-                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Black);
-                }else{
+                else if (r1 == r2 - 1 && abs(c1 - c2) == 1)
+                    return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Black);
+                else
                     return false;
-                }
-
             }
 
         case PieceType::Knight:
-            if (tempC == Colour::Black){
-                if (abs(r1 - r2) == 1 && abs(c1 - c2) == 2){
+            if (tempC == Colour::Black) {
+                if (abs(r1 - r2) == 1 && abs(c1 - c2) == 2)
                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
-                }
-                else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
-                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
-                }else{
+                else if (r1 == r2 + 1 && abs(c1 - c2) == 1)
+                    return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);
+                else
                     return false;
-                }
-
-            }else{
-                if (abs(r1 - r2) == 2 && abs(c1 - c2) == 1){
+            } else {
+                if (abs(r1 - r2) == 2 && abs(c1 - c2) == 1)
                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
-                }
-                else if (r1 == r2 - 1 && abs(c1 - c2) == 1){
-                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
-                }else{
+                else if (r1 == r2 - 1 && abs(c1 - c2) == 1)
+                    return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);
+                else
                     return false;
-                }
-
             }
 
         case PieceType::Bishop:

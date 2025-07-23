@@ -1,80 +1,60 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "gamestate.h"
+#include "GameState.h"
 
-
-
-
-int main()
-{
+int main() {
     std::string command;
-    Gamestate game;
-    std::string setupstring;
-    setupstring = "RNBQKBNRPPPPPPPP--------------------------------pppppppprnbqkbnr";
+    GameState game;
+    std::string setupString = "RNBQKBNRPPPPPPPP--------------------------------pppppppprnbqkbnr";
 
     //main gameloop goes here
-    while (true){
-         std::getline(std::cin,command);
+    while (true) {
+        std::getline(std::cin, command);
 
         //std::cout << command;
 
         std::istringstream iss(command);
-
         std::string cmd;
-
         iss >> cmd;
 
-         if (cmd == "white-player"){
+        if (cmd == "white-player") {
             //std::cout << "w detected";
             std::string player1;
             iss >> player1;
             iss >> cmd;
-            if (cmd == "black-player"){
+            if (cmd == "black-player") {
                 //std::cout <<"b detected";
                 std::string player2;
                 iss >> player2;
-                if (player1 == "human"){
-                    if (player2 == "human"){
-                        //std::cout << "reached gamestate" << std::endl;
-                        game.init(setupstring, 8, 0, 0);
-                        game.printBoard();
-                    }
-                    
-                }else{
-                    std::cout << "no implemented";
+                if (player1 == "human" && player2 == "human") {
+                    //std::cout << "reached gamestate" << std::endl;
+                    game.init(setupString, 8, 0, 0);
+                    game.printBoard();
+                } 
+                else {
+                    std::cout << "not implemented";
                 }
-
-            }else{
+            } 
+            else {
                 std::cerr << "bad command";
-
             }
-        }
+        } 
+        else if (cmd == "move") {
+            std::string originalTile;
+            std::string newTile;
+            iss >> originalTile; 
+            iss >> newTile;
 
+            int r1 = originalTile[0] - '0';
+            int c1 = originalTile[1] - 'a' + 1;
+            int r2 = newTile[0] - '0';
+            int c2 = newTile[1] - 'a' + 1;
 
-        else if (cmd == "move"){
-            std::string piece;
-            std::string originaltile;
-            std::string newtile;
-
-            iss >> originaltile; 
-            iss >> newtile;
-
-            int r1 = originaltile[0] - '0';
-            int c1 = originaltile[1] - 'a' + 1;
-            int r2 = newtile[0] - '0';
-            int c2 = newtile[1] - 'a' + 1;
-
-
-            if(game.move(r1,c1,r1,c2)){
+            if (game.move(r1, c1, r2, c2)) 
                 game.printBoard();
-
-            }else{
+            else
                 std::cerr << "bad move";
-            }
-
         }
-
     }
-
 }
