@@ -47,7 +47,7 @@ void GameState::rewind(int turns) {
     history.erase(history.end() - turns, history.end());
 }
 
-void Gamestate::printBoard(){
+void GameState::printBoard(){
     currBoard->updateBoard();
-    std::cout << currBoard;
+    std::cout << *currBoard;
 }

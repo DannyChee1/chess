@@ -6,6 +6,16 @@
 #include "Info.h"
 #include "AttackState.h"
 
+
+int abs(int x){
+    if (x < 0){
+        return -x;
+
+    }else{
+        return x;
+    }
+
+}
 Cell::Cell(Piece p, int r, int c) : r{r}, c{c}, currentPiece{p} {
     this->attackedByWhite = false;
     this->attackedByBlack = false;
