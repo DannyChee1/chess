@@ -50,13 +50,13 @@ int main() {
             iss >> originalTile; 
             iss >> newTile;
 
-            int r1 = originalTile[1] - '0';
-            int c1 = originalTile[0] - 'a' + 1;
-            int r2 = newTile[1] - '0';
-            int c2 = newTile[0] - 'a' + 1;
+            int r1 = originalTile[1] - '1';
+            int c1 = originalTile[0] - 'a';
+            int r2 = newTile[1] - '1';
+            int c2 = newTile[0] - 'a';
 
 
-            if(game.move(r1,c1,r1,c2)){
+            if(game.move(r1,c1,r2,c2)){
                 game.printBoard();
             }else{
                 std::cerr << "bad move";}

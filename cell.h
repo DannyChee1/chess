@@ -1,10 +1,10 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "Piece.h"
-#include "Observer.h"
-#include "Subject.h"
-#include "AttackState.h"
+#include "piece.h"
+#include "observer.h"
+#include "subject.h"
+#include "attackState.h"
 
 class Cell : public Subject, public Observer {
     Piece currentPiece;

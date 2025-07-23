@@ -1,10 +1,10 @@
-#include "Cell.h"
+#include "cell.h"
 #include <cstddef>
-#include "Piece.h"
-#include "Subject.h"
-#include "Observer.h"
-#include "Info.h"
-#include "AttackState.h"
+#include "piece.h"
+#include "subject.h"
+#include "observer.h"
+#include "info.h"
+#include "attackState.h"
 
 
 int abs(int x){
@@ -16,6 +16,7 @@ int abs(int x){
     }
 
 }
+
 Cell::Cell(Piece p, int r, int c) : r{r}, c{c}, currentPiece{p} {
     this->attackedByWhite = false;
     this->attackedByBlack = false;
