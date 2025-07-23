@@ -5,8 +5,8 @@ void GameState::init(std::string startup, int n, int p1Bot, int p2Bot) {
     currBoard->init(startup, n);
     std::vector<Board*> history;
     playerTurn = Colour::White;
-    player1IsBot = p1Bot;
-    player2IsBot = p2Bot;
+    Player1IsBot = p1Bot;
+    Player2IsBot = p2Bot;
 }
 
 bool GameState::move(int r1, int c1, int r2, int c2) {
@@ -47,7 +47,15 @@ void GameState::rewind(int turns) {
     history.erase(history.end() - turns, history.end());
 }
 
-void GameState::printBoard(){
+void GameState::printBoard() {
     currBoard->updateBoard();
-    std::cout << *currBoard;
+    std::cout << currBoard;
+}
+
+Board* GameState::getBoard() {
+    return currBoard;
+}
+
+void GameState::setPlayerTurn(Colour colour) {
+    playerTurn = colour;
 }

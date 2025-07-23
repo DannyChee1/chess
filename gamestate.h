@@ -21,6 +21,8 @@ class GameState {
     char hasWon(); //returns the character w,b,s,n for who is winning in the current boardstate (w for white, b for black, s for stalemate, n for neither)
     void rewind(int turns); //rewinds the game by amount of turns
     void printBoard(); //prints the board
+    Board* getBoard();
+    void setPlayerTurn(Colour colour);
 }
 ;
 
