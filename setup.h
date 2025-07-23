@@ -6,10 +6,10 @@
 #include "subject.h"
 #include "observer.h"
 #include "gameState.h"
-#include <string>
+
 
 class Setup {
-    GameState *gameState;
+    std::string boardString;
     public:
         std::string clear();
         bool isValid();
