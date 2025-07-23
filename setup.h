@@ -10,13 +10,14 @@
 
 class Setup {
     std::string boardString;
+    Colour starting_colour;
     public:
         std::string clear();
         bool isValid();
-        std::string place(Piece placed_piece, size_t row, size_t column);
-        std::string remove(size_t row, size_t column);
+        std::string place(Piece placed_piece, std::string board, size_t row, size_t column);
+        std::string remove(std::string board, size_t row, size_t column);
         std::string defaultSetup();
-        void setColour(Colour starting_colour);
+        void setColour(Colour colour);
 };
 
 #endif
