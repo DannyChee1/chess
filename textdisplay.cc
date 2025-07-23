@@ -8,9 +8,9 @@
 
 //potentially check this, not sure if this constructor is properly made
 TextDisplay::TextDisplay(std::string setupString, int n): boardSize{n} {
-    std::vector<std::vector<char>> display;
     display.resize(n);
     for (int i = 0; i < n ; i++){
+        display[i].resize(n);
         for (int j = 0; j < n; j++){
             display[i][j] = setupString[i * n + j];
 
@@ -100,7 +100,7 @@ void TextDisplay::notify(Subject &sender){
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td){
     for (int i = 0; i < td.boardSize; i++){
         for (int j = 0; j < td.boardSize; j++){
-            out << td.display[i][j];
+            out << td.display[td.boardSize - i - 1][j];
         }
         out << "\n";
     }

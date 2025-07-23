@@ -1,6 +1,6 @@
 #include "gamestate.h"
 
-void Gamestate::init(std::string startup, int n, bool p1bot, bool p2bot) {
+void Gamestate::init(std::string startup, int n, int p1bot, int p2bot) {
     currBoard = new Board(n);
     currBoard->init(startup, n);
     std::vector<Board*> history;
@@ -9,14 +9,16 @@ void Gamestate::init(std::string startup, int n, bool p1bot, bool p2bot) {
     Player2IsBot = p2bot;
 }
 
-void Gamestate::move(int r1, int c1, int r2, int c2){
+bool Gamestate::move(int r1, int c1, int r2, int c2){
     if(currBoard->checkLegality(r1,c1,r2,c2,playerTurn)){
         history.push_back(currBoard->getPositions());
         currBoard->movePiece(r1,c1,r2,c2);
         switchTurn();
+        return true;
 
     }else{
         std::cout << "illegal move, select a different move";
+        return false;
     }
 
 }
@@ -57,3 +59,8 @@ void Gamestate::Rewind(int turns){
     history.erase(history.end() - turns, history.end());
 }
     
+
+void Gamestate::printBoard(){
+    std::cout << currBoard;
+
+}

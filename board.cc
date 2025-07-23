@@ -8,13 +8,13 @@
 #include "textdisplay.h"
 #include <string>
 
-Piece default = {PieceType::Pawn, Colour::Nothing, false};
+Piece basic = {PieceType::Pawn, Colour::Nothing, false};
 
 Board::Board(int n) : n{n} {
     for (int i = 0; i < n; i++){
         std::vector<Cell> tempRow;
         for (int j = 0; j < n; j++){
-            tempRow.emplace_back(default,i,j);
+            tempRow.emplace_back(basic,i,j);
 
         }
         theBoard.push_back(std::move(tempRow));
@@ -31,7 +31,7 @@ void Board::init (std::string setupstring, int n){
 
     for (int i = 0; i < this->n; i++){
         for (int j = 0; j < this->n; j++){
-            theBoard[i].emplace_back(default,i,j);
+            theBoard[i].emplace_back(basic,i,j);
             theBoard[i][j].attach(td);
             char temp = setupstring[this->n * i + j];
             switch(temp){
