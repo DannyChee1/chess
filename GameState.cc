@@ -49,7 +49,7 @@ void GameState::rewind(int turns) {
 
 void GameState::printBoard() {
     currBoard->updateBoard();
-    std::cout << currBoard;
+    std::cout << *currBoard;
 }
 
 Board* GameState::getBoard() {

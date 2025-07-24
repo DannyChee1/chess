@@ -155,14 +155,14 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
             if (tempC == Colour::Black) {
                 if (abs(r1 - r2) == 1 && abs(c1 - c2) == 2){
                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);}
-                else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
+                else if (abs(r1 - r2) == 2 && abs(c1 - c2) == 1){
                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black);}
                 else{
                     return false;}
             } else {
                 if (abs(r1 - r2) == 2 && abs(c1 - c2) == 1){
                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);}
-                else if (r1 == r2 - 1 && abs(c1 - c2) == 1){
+                else if (abs(r1 - r2) == 1 && abs(c1 - c2) == 2){
                     return (theBoard[r2][c2].getInfo().curPiece.colour != Colour::White);}
                 else{
                     return false;}
@@ -531,11 +531,9 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
         case PieceType::King:
             if (tempC == Colour::Black){
                 if (abs(r1 - r2) <= 1 && abs(c1 - c2) <= 1){
-                    if (theBoard[r2][c2].getInfo().aWhite){
-                        return false;
-                    }else{
-                        return theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black;
-                    }
+            
+                    return theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black;
+                    
 
                 }
                 else{
@@ -544,11 +542,9 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
 
             }else{
                 if (abs(r1 - r2) <= 1 && abs(c1 - c2) <= 1){
-                    if (theBoard[r2][c2].getInfo().aBlack){
-                        return false;
-                    }else{
+                 
                         return theBoard[r2][c2].getInfo().curPiece.colour != Colour::White;
-                    }
+                    
 
                 }
                 else{
@@ -573,7 +569,12 @@ void Board::clear(){
 void Board::updateBoard(){
     for (int i = 0; i < n; i++){
         for (int j = 0; j < n; j++){
-            theBoard[i][j].notifyObservers();
+            theBoard[i][j].resetAttack();
+        }
+    }
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            theBoard[i][j].startNotify();
         }
     }
 }
@@ -585,7 +586,7 @@ void Board::setPiece(int r, int c, Piece p){
 
 bool Board::legalBoard(Colour turn){
     if (turn == Colour::Black){
-        return !(theBoard[rwk][rwk].getInfo().aBlack);
+        return !(theBoard[rwk][cwk].getInfo().aBlack);
     }else{
         return !(theBoard[rbk][cbk].getInfo().aWhite);
 }

@@ -1,10 +1,10 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "piece.h"
-#include "observer.h"
-#include "subject.h"
-#include "attackState.h"
+#include "Piece.h"
+#include "Observer.h"
+#include "Subject.h"
+#include "AttackState.h"
 
 class Cell : public Subject, public Observer {
     Piece currentPiece;
@@ -17,6 +17,8 @@ public:
     void setCell(Piece p, int row, int col); 
     void notify(Subject &sender) override;
     Info getInfo() const override;
+    void resetAttack();
+    void startNotify();
 };
 
 #endif

@@ -56,4 +56,5 @@ GameState Computer::playMove(GameState *curr_state) {
     // Other levels not implemented
     return *curr_state;
 }
+}
 

@@ -1,10 +1,10 @@
-#include "cell.h"
+#include "Cell.h"
 #include <cstddef>
-#include "piece.h"
-#include "subject.h"
-#include "observer.h"
-#include "info.h"
-#include "attackState.h"
+#include "Piece.h"
+#include "Subject.h"
+#include "Observer.h"
+#include "Info.h"
+#include "AttackState.h"
 
 
 int abs(int x){
@@ -29,7 +29,23 @@ void Cell::setCell(Piece p, int row, int col) {
 }
 
 Info Cell::getInfo() const {
-    return Info{this->r, this->c, this->attackedByBlack, this->attackedByWhite, this->currentPiece};
+    return Info{this->r, this->c, this->attackedByWhite, this->attackedByBlack, this->currentPiece};
+}
+
+void Cell::resetAttack(){
+    attackedByBlack = false;
+    attackedByWhite = false;
+}
+
+void Cell::startNotify(){
+    setAttackState(AttackState{r,c,currentPiece.colour,currentPiece.type,AttackType::Straight});
+    notifyObservers();
+    if(currentPiece.type == PieceType::Queen){
+        setAttackState(AttackState{r,c,currentPiece.colour,currentPiece.type,AttackType::Diagonal});
+        notifyObservers();
+    }
+
+
 }
 
 void Cell::notify(Subject &sender) {
@@ -49,15 +65,15 @@ void Cell::notify(Subject &sender) {
         }
 
         if (stateTemp.type == PieceType::Knight) {
-            if ((stateTemp.c - this->c == abs(1) && stateTemp.r - this->r == abs(2)) || 
-                (stateTemp.c - this->c == abs(2) && stateTemp.r - this->r == abs(1))) {
+            if ((abs(stateTemp.c - this->c) == 1 && abs(stateTemp.r - this->r) == 2) || 
+                (abs(stateTemp.c - this->c) == 2 && abs(stateTemp.r - this->r) == 1)) {
                 if (stateTemp.colour == Colour::Black)
                     this->attackedByBlack = true;
                 if (stateTemp.colour == Colour::White)
                     this->attackedByWhite = true;
             }
-            if (abs(this->c - stateTemp.c) > abs(temp.col - stateTemp.c) || 
-                abs(this->r - stateTemp.r) > abs(temp.row - stateTemp.r)) {
+            if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
+                abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
                 setAttackState(stateTemp);
                 notifyObservers();
             }
@@ -69,12 +85,13 @@ void Cell::notify(Subject &sender) {
                     this->attackedByBlack = true;
                 if (stateTemp.colour == Colour::White)
                     this->attackedByWhite = true;
+                if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
+                    abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
+                    setAttackState(stateTemp);
+                    notifyObservers();
             }
-            if (abs(this->c - stateTemp.c) > abs(temp.col - stateTemp.c) || 
-                abs(this->r - stateTemp.r) > abs(temp.row - stateTemp.r)) {
-                setAttackState(stateTemp);
-                notifyObservers();
             }
+            
         }
 
         if (stateTemp.type == PieceType::Rook) {
@@ -83,12 +100,13 @@ void Cell::notify(Subject &sender) {
                     this->attackedByBlack = true;
                 if (stateTemp.colour == Colour::White)
                     this->attackedByWhite = true;
+                if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
+                    abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
+                    setAttackState(stateTemp);
+                    notifyObservers();
             }
-            if (abs(this->c - stateTemp.c) > abs(temp.col - stateTemp.c) || 
-                abs(this->r - stateTemp.r) > abs(temp.row - stateTemp.r)) {
-                setAttackState(stateTemp);
-                notifyObservers();
             }
+          
         }
 
         if (stateTemp.type == PieceType::Queen) {
@@ -98,6 +116,11 @@ void Cell::notify(Subject &sender) {
                         this->attackedByBlack = true;
                     if (stateTemp.colour == Colour::White)
                         this->attackedByWhite = true;
+                    if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
+                        abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
+                        setAttackState(stateTemp);
+                        notifyObservers();
+            }
                 }
             } else if (stateTemp.atype == AttackType::Straight) {
                 if (stateTemp.c == this->c || stateTemp.r == this->r) {
@@ -105,13 +128,14 @@ void Cell::notify(Subject &sender) {
                         this->attackedByBlack = true;
                     if (stateTemp.colour == Colour::White)
                         this->attackedByWhite = true;
+                    if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
+                        abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
+                        setAttackState(stateTemp);
+                        notifyObservers();
+            }
                 }
             }
-            if (abs(this->c - stateTemp.c) > abs(temp.col - stateTemp.c) || 
-                abs(this->r - stateTemp.r) > abs(temp.row - stateTemp.r)) {
-                setAttackState(stateTemp);
-                notifyObservers();
-            }
+            
         }
 
         if (stateTemp.type == PieceType::King) {
@@ -134,15 +158,15 @@ void Cell::notify(Subject &sender) {
         }
 
         if (stateTemp.type == PieceType::Knight) {
-            if ((stateTemp.c - this->c == abs(1) && stateTemp.r - this->r == abs(2)) || 
-                (stateTemp.c - this->c == abs(2) && stateTemp.r - this->r == abs(1))) {
+            if ((abs(stateTemp.c - this->c) == 1 && abs(stateTemp.r - this->r) == 2) || 
+                (abs(stateTemp.c - this->c) == 2 && abs(stateTemp.r - this->r) == 1)) {
                 if (stateTemp.colour == Colour::Black)
                     this->attackedByBlack = true;
                 if (stateTemp.colour == Colour::White)
                     this->attackedByWhite = true;
             }
-            if (abs(this->c - stateTemp.c) > abs(temp.col - stateTemp.c) || 
-                abs(this->r - stateTemp.r) > abs(temp.row - stateTemp.r)) {
+            if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
+                abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
                 setAttackState(stateTemp);
                 notifyObservers();
             }
