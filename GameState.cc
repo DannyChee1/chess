@@ -17,6 +17,16 @@ bool GameState::move(int r1, int c1, int r2, int c2) {
                 currBoard->setPiece(r1 ,c2,Piece{PieceType::Pawn,Colour::Nothing,0});
             }
         }
+        if(currBoard->getCell(r1,c1).getInfo().curPiece.type == PieceType::King && abs(c1 - c2) > 1){
+            if(c2 > c1){
+                currBoard->setPiece(r1 ,7,Piece{PieceType::Pawn,Colour::Nothing,0});
+                currBoard->setPiece(r1 ,5,Piece{PieceType::Rook,playerTurn,1});
+            }else{
+                currBoard->setPiece(r1 ,0,Piece{PieceType::Pawn,Colour::Nothing,0});
+                currBoard->setPiece(r1 ,3,Piece{PieceType::Rook,playerTurn,1});
+
+            }
+        }
         Piece temp = currBoard->getCell(r1,c1).getInfo().curPiece;
         currBoard->movePiece(r1, c1, r2, c2);
         temp.previousMoves = temp.previousMoves + 1;

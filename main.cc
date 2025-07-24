@@ -7,6 +7,8 @@ int main() {
     std::string command;
     GameState game;
     std::string setupString = "RNBQKBNRPPPPPPPP--------------------------------pppppppprnbqkbnr";
+    std::string testing = "-K-------P----------------p-----------------------------------k-";
+    std::string testing2 = "R---K--R---------------------------------------------------rk---";
 
     //main gameloop goes here
     while (true) {
