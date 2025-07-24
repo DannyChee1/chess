@@ -20,6 +20,11 @@ Board::Board(int n) : n{n} {
     td = nullptr;
 } 
 
+Board::~Board(){
+    theBoard.clear();
+    delete td;
+}
+
 void Board::init(std::string setupString, int n) {
     this->n = n;
     theBoard.clear();
