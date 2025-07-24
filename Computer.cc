@@ -2,6 +2,10 @@
 #include <random>
 #include <chrono>
 
+Computer::~Computer() {
+    delete gameState;
+}
+
 GameState Computer::playMove(GameState *curr_state) {
     // Assume that the board is 8x8
     Colour computer_colour = curr_state->getPlayerTurn();
@@ -25,6 +29,7 @@ GameState Computer::playMove(GameState *curr_state) {
                 std::cerr << "Something went wrong: stalemate" << std::endl;
                 return *curr_state;
             }
+        }
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Cell cell = board->getCell(i, j);
@@ -56,5 +61,5 @@ GameState Computer::playMove(GameState *curr_state) {
     // Other levels not implemented
     return *curr_state;
 }
-}
+
 

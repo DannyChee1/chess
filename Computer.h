@@ -8,7 +8,7 @@ class Computer {
     public:
         Computer() = default;
         Computer(size_t level) : level(level) {}
-        ~Computer();
+        ~Computer() {}
         GameState playMove(GameState *curr_state);
 };
 

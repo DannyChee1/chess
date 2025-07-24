@@ -16,7 +16,7 @@ bool GameState::move(int r1, int c1, int r2, int c2) {
         switchTurn();
         return true;
     } else {
-        std::cout << "illegal move, select a different move";
+        std::cout << "illegal move, select a different move" << std::endl;
         return false;
     }
 }

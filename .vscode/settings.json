@@ -63,6 +63,9 @@
         "text_encoding": "cpp",
         "variant": "cpp",
         "*.tcc": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "iomanip": "cpp"
     }
 }
