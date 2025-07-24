@@ -143,15 +143,32 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
             if (tempC == Colour::Black) {
                 if (r1 == r2 + 1 && c1 == c2){
                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing);}
+                else if(r1 == r2 + 2 && c1 == c2){
+                    return ((theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing) && (theBoard[r2 + 1][c2].getInfo().curPiece.colour == Colour::Nothing) && theBoard[r1][c1].getInfo().curPiece.previousMoves == 0);}
+                
                 else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
-                    return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White);}
+                    if (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White){
+                        return true;
+                    }else{
+                        return (theBoard[r1][c2].getInfo().curPiece.colour == Colour::White && 
+                        theBoard[r2 - 1][c2].getInfo().curPiece.type == PieceType::Pawn && lastMoveCol == c2 && lastMoveRow == r1);
+                    }
+                }
                 else{
                     return false;}
             } else {
                 if (r1 == r2 - 1 && c1 == c2){
                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing);}
-                else if (r1 == r2 - 1 && abs(c1 - c2) == 1){
-                    return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Black);}
+                else if(r1 == r2 - 2 && c1 == c2){
+                    return ((theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing) && (theBoard[r2 - 1][c2].getInfo().curPiece.colour == Colour::Nothing) && theBoard[r1][c1].getInfo().curPiece.previousMoves == 0);}
+                else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
+                    if (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White){
+                        return true;
+                    }else{
+                        return (theBoard[r1][c2].getInfo().curPiece.colour == Colour::White && 
+                        theBoard[r2 - 1][c2].getInfo().curPiece.type == PieceType::Pawn && lastMoveCol == c2 && lastMoveRow == r1);
+                    }
+                }
                 else{
                     return false;}
             }

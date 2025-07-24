@@ -15,7 +15,10 @@ int abs(int x){
         return x;
     }
 
+
+    
 }
+
 
 Cell::Cell(Piece p, int r, int c) : r{r}, c{c}, currentPiece{p} {
     this->attackedByWhite = false;
@@ -27,6 +30,7 @@ void Cell::setCell(Piece p, int row, int col) {
     r = row;
     c = col;
 }
+
 
 Info Cell::getInfo() const {
     return Info{this->r, this->c, this->attackedByWhite, this->attackedByBlack, this->currentPiece};
