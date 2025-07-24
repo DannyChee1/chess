@@ -46,12 +46,30 @@ GameState Computer::playMove(GameState *curr_state) {
             std::cerr << "No legal moves found" << std::endl;
             return *curr_state;
         }
+        
+        // Print all legal moves
+        std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
+        for (const auto& move : legalMoves) {
+            char fromFile = 'a' + move.first.second;
+            char fromRank = '1' + move.first.first;
+            char toFile = 'a' + move.second.second;
+            char toRank = '1' + move.second.first;
+            std::cout << "  " << fromFile << fromRank << " " << toFile << toRank << std::endl;
+        }
+        
         // Mersenne Twister
         std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
         std::uniform_int_distribution<> distribution(0, legalMoves.size() - 1);
         int randIndex = distribution(gen);
         
         std::pair<std::pair<int, int>, std::pair<int, int>> selected = legalMoves[randIndex];
+        
+        // Print the selected move
+        char fromFile = 'a' + selected.first.second;
+        char fromRank = '1' + selected.first.first;
+        char toFile = 'a' + selected.second.second;
+        char toRank = '1' + selected.second.first;
+        std::cout << "Computer chooses: " << fromFile << fromRank << " " << toFile << toRank << std::endl;
         
         GameState new_state = *curr_state;
         new_state.move(selected.first.first, selected.first.second, selected.second.first, selected.second.second);
