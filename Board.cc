@@ -696,7 +696,25 @@ std::vector<Info> Board::getPositions(){
 
     return positions;
 }
+std::pair<int, int> Board::getKingPosition(Colour colour) {
+    return (colour == Colour::White) ? std::make_pair(rwk, cwk) : std::make_pair(rbk, cbk);
+}
 
+Cell Board::getCell(int r, int c) {
+    return theBoard[r][c];
+}
+
+std::vector<Info> Board::generateLegalMoves(int r, int c) {
+    std::vector<Info> legalMoves;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == r && j == c) continue;
+            if (checkLegality(r, c, i, j, theBoard[r][c].getInfo().curPiece.colour))
+                legalMoves.push_back(theBoard[i][j].getInfo());
+        }
+    }
+    return legalMoves;
+}
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
     out << *(b.td);

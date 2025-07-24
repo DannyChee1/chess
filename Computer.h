@@ -4,9 +4,10 @@
 
 class Computer {
     GameState *gameState;
-    size_t level;
+    size_t level = 1;
     public:
-        Computer();
+        Computer() = default;
+        Computer(size_t level) : level(level) {}
         ~Computer();
         GameState playMove(GameState *curr_state);
 };
