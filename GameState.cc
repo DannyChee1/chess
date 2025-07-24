@@ -5,8 +5,8 @@ void GameState::init(std::string startup, int n, int p1Bot, int p2Bot) {
     currBoard->init(startup, n);
     std::vector<Board*> history;
     playerTurn = Colour::White;
-    Player1IsBot = p1Bot;
-    Player2IsBot = p2Bot;
+    player1IsBot = p1Bot;
+    player2IsBot = p2Bot;
 }
 
 bool GameState::move(int r1, int c1, int r2, int c2) {

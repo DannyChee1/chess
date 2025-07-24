@@ -87,6 +87,7 @@ void TextDisplay::notify(Subject &sender) {
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
+    out << "\n";
     for (int i = 0; i < td.boardSize; i++) {
         for (int j = 0; j < td.boardSize; j++)
             out << td.display[td.boardSize - i - 1][j];
