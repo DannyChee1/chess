@@ -143,15 +143,32 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
             if (tempC == Colour::Black) {
                 if (r1 == r2 + 1 && c1 == c2){
                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing);}
+                else if(r1 == r2 + 2 && c1 == c2){
+                    return ((theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing) && (theBoard[r2 + 1][c2].getInfo().curPiece.colour == Colour::Nothing) && theBoard[r1][c1].getInfo().curPiece.previousMoves == 0);}
+                
                 else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
-                    return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White);}
+                    if (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White){
+                        return true;
+                    }else{
+                        return (theBoard[r1][c2].getInfo().curPiece.colour == Colour::White && 
+                        theBoard[r2 - 1][c2].getInfo().curPiece.type == PieceType::Pawn && lastMoveCol == c2 && lastMoveRow == r1);
+                    }
+                }
                 else{
                     return false;}
             } else {
                 if (r1 == r2 - 1 && c1 == c2){
                     return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing);}
-                else if (r1 == r2 - 1 && abs(c1 - c2) == 1){
-                    return (theBoard[r2][c2].getInfo().curPiece.colour == Colour::Black);}
+                else if(r1 == r2 - 2 && c1 == c2){
+                    return ((theBoard[r2][c2].getInfo().curPiece.colour == Colour::Nothing) && (theBoard[r2 - 1][c2].getInfo().curPiece.colour == Colour::Nothing) && theBoard[r1][c1].getInfo().curPiece.previousMoves == 0);}
+                else if (r1 == r2 + 1 && abs(c1 - c2) == 1){
+                    if (theBoard[r2][c2].getInfo().curPiece.colour == Colour::White){
+                        return true;
+                    }else{
+                        return (theBoard[r1][c2].getInfo().curPiece.colour == Colour::White && 
+                        theBoard[r2 - 1][c2].getInfo().curPiece.type == PieceType::Pawn && lastMoveCol == c2 && lastMoveRow == r1);
+                    }
+                }
                 else{
                     return false;}
             }
@@ -534,11 +551,46 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
         //IMPLEMENT CASTLING LATER
 
         case PieceType::King:
-            if (tempC == Colour::Black){
+           if (tempC == Colour::Black){
                 if (abs(r1 - r2) <= 1 && abs(c1 - c2) <= 1){
-            
-                    return theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black;
-                    
+                    return theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black;   
+                }
+                //Queenside Castle
+                else if(r2 == 7 && c2 == 2 && r1 == 7 && c1 == 4){
+                    if(theBoard[r1][c1].getInfo().curPiece.previousMoves == 0){
+                        if(theBoard[7][0].getInfo().curPiece.previousMoves == 0){
+                            for (int i = c1; i >= c2; --i){
+                                if(theBoard[r1][i].getInfo().aWhite){
+                                    return false;
+                                }
+                                for(int i = c1 - 1; i >=2; --i){
+                                    if(theBoard[r1][i].getInfo().curPiece.colour != Colour::Nothing){
+                                    return false;
+                                }
+                            }
+                            }
+                            return true;
+                        }
+                    }
+
+                }
+                //Kingside Castle
+                else if(r2 == 7 && c2 == 6 && r1 == 7 && c1 == 4){
+                    if(theBoard[r1][c1].getInfo().curPiece.previousMoves == 0){
+                        if(theBoard[7][0].getInfo().curPiece.previousMoves == 0){
+                            for (int i = c1; i <= c2; ++i){
+                                if(theBoard[r1][i].getInfo().aWhite){
+                                    return false;
+                                }
+                            for(int i = c1 + 1; i <=c2; ++i){
+                                if(theBoard[r1][i].getInfo().curPiece.colour != Colour::Nothing){
+                                    return false;
+                                }
+                            }
+                            }
+                            return true;
+                        }
+                    }
 
                 }
                 else{
@@ -547,12 +599,52 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
 
             }else{
                 if (abs(r1 - r2) <= 1 && abs(c1 - c2) <= 1){
-                 
-                        return theBoard[r2][c2].getInfo().curPiece.colour != Colour::White;
                     
+                    return theBoard[r2][c2].getInfo().curPiece.colour != Colour::White;
+                }
+
+                else if(r2 == 0 && c2 == 2 && r1 == 0 && c1 == 4){
+                    if(theBoard[r1][c1].getInfo().curPiece.previousMoves == 0){
+                        if(theBoard[7][0].getInfo().curPiece.previousMoves == 0){
+                            for (int i = c1; i >= c2; --i){
+                                if(theBoard[r1][i].getInfo().aBlack){
+                                    return false;
+                                }
+                            for(int i = c1 - 1; i >= 2; --i){
+                                if(theBoard[r1][i].getInfo().curPiece.colour != Colour::Nothing){
+                                    return false;
+                                }
+                            }
+                            }
+                            return true;
+                        }
+                    }
+
+                }
+                //Kingside Castle
+                else if(r2 == 0 && c2 == 6 && r1 == 0 && c1 == 4){
+                    std::cout <<"flag1";
+                    if(theBoard[r1][c1].getInfo().curPiece.previousMoves == 0){
+                        std::cout <<"flag2";
+                        if(theBoard[7][0].getInfo().curPiece.previousMoves == 0){
+                            std::cout <<"got here";
+                            for (int i = c1; i <= c2; ++i){
+                                if(theBoard[r1][i].getInfo().aBlack){
+                                    return false;
+                                }
+                            for(int i = c1 + 1; i <=c2; ++i){
+                                if(theBoard[r1][i].getInfo().curPiece.colour != Colour::Nothing){
+                                    return false;
+                                }
+                            }
+                            }
+                            return true;
+                        }
+                    }
 
                 }
                 else{
+                    std::cout << r1 << c1 << r2 << c2;
                     return false;
                 }
                 

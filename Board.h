@@ -14,11 +14,14 @@ class TextDisplay;
 class Board {
     std::vector<std::vector<Cell>> theBoard;  // The actual board
     TextDisplay *td = nullptr; // Text display observer
+    //GraphicsDisplay *gd = nullptr;
     int n; // dimensions of the board
     int rbk, cbk = 0; // position of black king
     int rwk, cwk = 0; // position of white king
 
 public:
+    int lastMoveRow = 0;
+    int lastMoveCol = 0;
     Board(int n);
     ~Board();
 

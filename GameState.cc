@@ -12,7 +12,27 @@ void GameState::init(std::string startup, int n, int p1Bot, int p2Bot) {
 bool GameState::move(int r1, int c1, int r2, int c2) {
     if (currBoard->checkLegality(r1, c1, r2, c2, playerTurn)) {
         history.push_back(currBoard->getPositions());
+        if(currBoard->getCell(r1,c1).getInfo().curPiece.type == PieceType::Pawn){
+            if(c2 != c1 && currBoard->getCell(r2,c2).getInfo().curPiece.colour == Colour::Nothing){
+                currBoard->setPiece(r1 ,c2,Piece{PieceType::Pawn,Colour::Nothing,0});
+            }
+        }
+        if(currBoard->getCell(r1,c1).getInfo().curPiece.type == PieceType::King && abs(c1 - c2) > 1){
+            if(c2 > c1){
+                currBoard->setPiece(r1 ,7,Piece{PieceType::Pawn,Colour::Nothing,0});
+                currBoard->setPiece(r1 ,5,Piece{PieceType::Rook,playerTurn,1});
+            }else{
+                currBoard->setPiece(r1 ,0,Piece{PieceType::Pawn,Colour::Nothing,0});
+                currBoard->setPiece(r1 ,3,Piece{PieceType::Rook,playerTurn,1});
+
+            }
+        }
+        Piece temp = currBoard->getCell(r1,c1).getInfo().curPiece;
         currBoard->movePiece(r1, c1, r2, c2);
+        temp.previousMoves = temp.previousMoves + 1;
+        currBoard->setPiece(r2,c2,temp);
+        currBoard->lastMoveRow = r2;
+        currBoard->lastMoveCol = c2;
         switchTurn();
         return true;
     } else {
