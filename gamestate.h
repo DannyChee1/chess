@@ -23,6 +23,7 @@ class GameState {
     void printBoard(); //prints the board
     Board* getBoard();
     void setPlayerTurn(Colour colour);
+    Colour getPlayerTurn();
 }
 ;
 

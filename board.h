@@ -35,7 +35,9 @@ public:
     void updateBoard(); // calls all of the cells on the board to notify
     void setPiece(int r, int c, Piece p); // sets a piece on the board
     std::vector<Info> getPositions(); // gets the positions 
-
+    std::pair<int, int> getKingPosition(Colour colour); // gets the position of the king of the given colour
+    std::vector<Info> generateLegalMoves(int r, int c); // generates the legal moves for a given position
+    Cell getCell(int r, int c); // gets a cell
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 

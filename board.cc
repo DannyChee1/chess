@@ -532,7 +532,7 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
         case PieceType::King:
             if (tempC == Colour::Black){
                 if (abs(r1 - r2) <= 1 && abs(c1 - c2) <= 1){
-                    if (theBoard[r2][c2].getInfo().awhite){
+                    if (theBoard[r2][c2].getInfo().aWhite){
                         return false;
                     }else{
                         return theBoard[r2][c2].getInfo().curPiece.colour != Colour::Black;
@@ -545,7 +545,7 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
 
             }else{
                 if (abs(r1 - r2) <= 1 && abs(c1 - c2) <= 1){
-                    if (theBoard[r2][c2].getInfo().ablack){
+                    if (theBoard[r2][c2].getInfo().aBlack){
                         return false;
                     }else{
                         return theBoard[r2][c2].getInfo().curPiece.colour != Colour::White;
@@ -585,9 +585,9 @@ void Board::setPiece(int r, int c, Piece p){
 
 bool Board::legalBoard(Colour turn){
     if (turn == Colour::Black){
-        return !(theBoard[rwk][rwk].getInfo().ablack);
+        return !(theBoard[rwk][rwk].getInfo().aBlack);
     }else{
-        return !(theBoard[rbk][cbk].getInfo().awhite);
+        return !(theBoard[rbk][cbk].getInfo().aWhite);
 }
 
 }
@@ -595,10 +595,10 @@ bool Board::legalBoard(Colour turn){
 bool Board::isCheck(Colour turn){
     if (turn == Colour::Black){
 
-        return !(theBoard[rbk][cbk].getInfo().awhite);
+        return !(theBoard[rbk][cbk].getInfo().aWhite);
     
     }else{
-        return !(theBoard[rwk][cwk].getInfo().ablack);
+        return !(theBoard[rwk][cwk].getInfo().aBlack);
         
     }
 } 
@@ -696,7 +696,25 @@ std::vector<Info> Board::getPositions(){
 
     return positions;
 }
+std::pair<int, int> Board::getKingPosition(Colour colour) {
+    return (colour == Colour::White) ? std::make_pair(rwk, cwk) : std::make_pair(rbk, cbk);
+}
 
+Cell Board::getCell(int r, int c) {
+    return theBoard[r][c];
+}
+
+std::vector<Info> Board::generateLegalMoves(int r, int c) {
+    std::vector<Info> legalMoves;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == r && j == c) continue;
+            if (checkLegality(r, c, i, j, theBoard[r][c].getInfo().curPiece.colour))
+                legalMoves.push_back(theBoard[i][j].getInfo());
+        }
+    }
+    return legalMoves;
+}
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
     out << *(b.td);

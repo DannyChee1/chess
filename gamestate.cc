@@ -59,3 +59,7 @@ Board* GameState::getBoard() {
 void GameState::setPlayerTurn(Colour colour) {
     playerTurn = colour;
 }
+
+Colour GameState::getPlayerTurn() {
+    return playerTurn;
+}
