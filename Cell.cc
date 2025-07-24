@@ -56,6 +56,11 @@ void Cell::notify(Subject &sender) {
     Info temp = sender.getInfo();
     AttackState stateTemp = sender.getAttackState();
 
+
+    if (stateTemp.colour == Colour::Nothing){
+        return;
+    }
+    
     if (this->currentPiece.colour == Colour::Nothing) {
         if (stateTemp.type == PieceType::Pawn) {
             if (stateTemp.colour == Colour::Black) {
@@ -89,8 +94,8 @@ void Cell::notify(Subject &sender) {
                     this->attackedByBlack = true;
                 if (stateTemp.colour == Colour::White)
                     this->attackedByWhite = true;
-                if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
-                    abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
+                if (temp.col == stateTemp.c && 
+                    temp.row == stateTemp.r) {
                     setAttackState(stateTemp);
                     notifyObservers();
             }
@@ -169,8 +174,8 @@ void Cell::notify(Subject &sender) {
                 if (stateTemp.colour == Colour::White)
                     this->attackedByWhite = true;
             }
-            if (abs(this->c - stateTemp.c) >= abs(temp.col - stateTemp.c) && 
-                abs(this->r - stateTemp.r) >= abs(temp.row - stateTemp.r)) {
+            if (temp.col == stateTemp.c && 
+                temp.row == stateTemp.r) {
                 setAttackState(stateTemp);
                 notifyObservers();
             }
