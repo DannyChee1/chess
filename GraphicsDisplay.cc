@@ -18,10 +18,10 @@ GraphicsDisplay::GraphicsDisplay(size_t n):size{n}{
 void GraphicsDisplay::notify(Subject &sender){
     int column=sender.getInfo().col;
     int row=sender.getInfo().row;
-    if (sender.getInfo().colour==Colour::Black){
+    if (sender.getInfo().curPiece.colour==Colour::Black){
         xw.fillRectangle(BORDER_SIZE+column*(GRID_SIZE/size),BORDER_SIZE+row*(GRID_SIZE/size),(GRID_SIZE/size)-1,(GRID_SIZE/size)-1,Xwindow::Black);
     }
-    if (who.getInfo().colour==Colour::White){
+    if (sender.getInfo().curPiece.colour==Colour::White){
         xw.fillRectangle(BORDER_SIZE+column*(GRID_SIZE/size),BORDER_SIZE+row*(GRID_SIZE/size),(GRID_SIZE/size)-1,(GRID_SIZE/size)-1,Xwindow::White);
     }
 }

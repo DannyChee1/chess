@@ -4,7 +4,7 @@
 #include <cstddef>
 #include "Piece.h"
 
-enum class AttackType { None, Diagonal, Straight };
+enum class AttackType { NoneN, Diagonal, Straight };
 
 struct AttackState {
     int r, c; // the coordinates of the original attacking piece 
