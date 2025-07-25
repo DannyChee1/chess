@@ -34,7 +34,6 @@ bool GameState::move(int r1, int c1, int r2, int c2) {
         currBoard->lastMoveRow = r2;
         currBoard->lastMoveCol = c2;
         switchTurn();
-        currBoard->updateGraphics();
         return true;
     } else {
         return false;
