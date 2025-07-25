@@ -1,10 +1,11 @@
+#ifndef __WINDOW_H__
+#define __WINDOW_H__
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <iostream>
 #include <cstdlib>
 #include <string>
 #include <unistd.h>
-#include "Window.h"
 
 using namespace std;
 
@@ -120,3 +121,5 @@ void Xwindow::drawKing(int x, int y, int colour) {
     XFillRectangle(d, w, gc, x + 20, y + 20, 10, 25);
     XFillArc(d, w, gc, x + 15, y + 43, 20, 5, 0, 360 * 64);
 }
+
+#endif
