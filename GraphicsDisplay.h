@@ -1,6 +1,10 @@
+#ifndef GRAPHICSDISPLAY_H
+#define GRAPHICSDISPLAY_H
+
 #include "Observer.h"
 #include "Window.h"
 #include "Subject.h"
+
 
 class GraphicsDisplay : public Observer {
     Xwindow xw;
@@ -12,3 +16,5 @@ class GraphicsDisplay : public Observer {
         GraphicsDisplay(int n);
         void virtual notify(Subject &who) override;
 };
+
+#endif

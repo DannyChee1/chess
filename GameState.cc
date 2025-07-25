@@ -42,6 +42,23 @@ bool GameState::move(int r1, int c1, int r2, int c2) {
     }
 }
 
+void GameState::promotion(PieceType p){
+    switchTurn();
+    int col = currBoard->promotion(playerTurn);
+    if(col >= 0){
+        if (playerTurn == Colour::White){
+        currBoard->setPiece(7,col,Piece{p,playerTurn,1});
+    }else{
+        currBoard->setPiece(0,col,Piece{p,playerTurn,1});
+    }
+    currBoard->updateBoard();
+    currBoard->updateGraphics();
+
+    }else{
+    }
+    switchTurn();
+
+}
 void GameState::switchTurn() {
     playerTurn = (playerTurn == Colour::Black) ? Colour::White : Colour::Black;
 }

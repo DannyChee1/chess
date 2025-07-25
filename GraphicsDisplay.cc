@@ -1,7 +1,6 @@
 #include "GraphicsDisplay.h"
 #include <iostream>
 
-
 GraphicsDisplay::GraphicsDisplay(int n):size{n}{
     //draw border
     xw.fillRectangle(0,0,window_size,window_size,Xwindow::Green);

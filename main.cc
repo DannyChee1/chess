@@ -14,7 +14,7 @@ bool isValidCoordinate(const std::string &coord) {
 bool isValidPromotionPiece(const std::string &piece) {
     if (piece.length() != 1) return false;
     char p = piece[0];
-    return (p == 'Q' || p == 'R' || p == 'B' || p == 'N' || p == 'q' || p == 'r' || p == 'b' || p == 'n');
+    return (p == 'Q' || p == 'R' || p == 'B' || p == 'K' || p == 'q' || p == 'r' || p == 'b' || p == 'k');
 }
 
 int main() {
@@ -24,6 +24,8 @@ int main() {
     bool gameStarted = false;
     int level1 = 0, level2 = 0;
     Computer computer1, computer2;
+    int bScore =  0;
+    int whiteScore = 0;
 
     // Main game loop starts here
     while (true) {
@@ -118,8 +120,20 @@ int main() {
 
                 // TODO: Handle promotion logic.
 
-                if (game.move(r1, c1, r2, c2))
+                if (game.move(r1, c1, r2, c2)){
+                    if(hasPromotion == true){
+                        if(promotionPiece[0] == 'q' || promotionPiece[0] == 'Q'){
+                            game.promotion(PieceType::Queen);
+                        }else if(promotionPiece[0] == 'R' || promotionPiece[0] == 'r'){
+                            game.promotion(PieceType::Rook);
+                        }else if(promotionPiece[0] == 'b' || promotionPiece[0] == 'B'){
+                            game.promotion(PieceType::Bishop);
+                        }else {
+                            game.promotion(PieceType::Knight);}
+
+                    }
                     game.printBoard();
+                }
                 else std::cerr << "bad move" << std::endl;
                 
             }

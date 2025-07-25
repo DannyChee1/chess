@@ -6,6 +6,7 @@
 #include "Cell.h"
 #include "Board.h"
 #include "TextDisplay.h"
+#include "GraphicsDisplay.h"
 #include <string>
 
 Piece basic = {PieceType::Pawn, Colour::Nothing, 0};
@@ -18,6 +19,7 @@ Board::Board(int n) : n{n} {
         theBoard.push_back(std::move(tempRow));
     }
     td = nullptr;
+    gd = nullptr;
 } 
 
 Board::Board(const Board& other) : n(other.n), rwk(other.rwk), cwk(other.cwk), 
@@ -25,6 +27,9 @@ rbk(other.rbk), cbk(other.cbk), lastMoveRow(other.lastMoveRow), lastMoveCol(othe
     theBoard = other.theBoard;
     if (other.td) td = new TextDisplay(*other.td);
     else td = nullptr;
+
+    if (other.gd) gd = new GraphicsDisplay(*other.gd);
+    else gd = nullptr;
 }
 
 Board &Board::operator=(const Board &other) {
@@ -40,6 +45,8 @@ Board &Board::operator=(const Board &other) {
         theBoard = other.theBoard;
         if (other.td) td = new TextDisplay(*other.td);
         else td = nullptr;
+        if (other.gd) gd = new GraphicsDisplay(*other.gd);
+        else gd = nullptr;
     }
     return *this;
 }
@@ -54,11 +61,11 @@ void Board::init(std::string setupString, int n) {
     theBoard.clear();
     theBoard.resize(n);
     td = new TextDisplay(setupString, n);
+    gd = new GraphicsDisplay(n);
 
     for (int i = 0; i < this->n; i++) {
         for (int j = 0; j < this->n; j++) {
             theBoard[i].emplace_back(basic, i, j);
-            theBoard[i][j].attach(td);
             char temp = setupString[this->n * i + j];
             switch(temp) {
                 case '-':
@@ -140,6 +147,8 @@ void Board::init(std::string setupString, int n) {
                     }
                 }
             }
+            theBoard[i][j].attach(td);
+            theBoard[i][j].setGNotify(gd);
         }
     }
 }
@@ -153,6 +162,29 @@ void Board::updateGraphics(){
         for (int j = 0; j < n; j++){
             theBoard[i][j].gNotify();
         }
+    }
+}
+
+int Board::promotion(Colour turn){
+    if (turn == Colour::White){
+        for(int i = 0; i < n; i++){
+            if(theBoard[7][i].getInfo().curPiece.type == PieceType::Pawn &&
+                theBoard[7][i].getInfo().curPiece.colour == Colour::White){
+                return i;
+            }
+        }
+        return -1;
+
+    }else{
+        for(int i = 0; i < n; i++){
+            if(theBoard[0][i].getInfo().curPiece.type == PieceType::Pawn &&
+                theBoard[0][i].getInfo().curPiece.colour == Colour::Black){
+                return i;
+            }
+        }
+        return -1;
+
+
     }
 }
 
@@ -171,7 +203,7 @@ bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
 
     switch(theBoard[r1][c1].getInfo().curPiece.type){
 
-        //IMPLEMENT EN PESSANT AND TWO MOVE LATER
+
         case PieceType::Pawn:
             if (tempC == Colour::Black) {
                 if (r1 == r2 + 1 && c1 == c2){
@@ -748,23 +780,39 @@ void Board::movePiece(int r1, int c1, int r2, int c2){
 
 //checks the legality of a potential future move.
 bool Board::checkLegality(int r1, int c1, int r2, int c2, Colour turn){
-    if (moveCheck(r1,c1,r2,c2,turn)){
-        // Create a copy of the board to test the move
-        Board testBoard = *this;
-        
-        // Make the move on the copy
-        testBoard.movePiece(r1, c1, r2, c2);
-        
-        // Check if the resulting position is legal
-        bool isLegal;
+   if (moveCheck(r1,c1,r2,c2,turn)){
+        Piece temp = theBoard[r2][c2].getInfo().curPiece; 
+        movePiece(r1,c1,r2,c2);
         if (turn == Colour::Black){
-            isLegal = testBoard.legalBoard(Colour::White);
-        } else {
-            isLegal = testBoard.legalBoard(Colour::Black);
+            if(legalBoard(Colour::White)){
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return true;
+
+            }else{
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return false;
+            }
+        } else{
+
+            if(legalBoard(Colour::Black)){
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return true;
+
+            }else{
+                std::cout << "not legal position";
+                movePiece(r2,c2,r1,c1);
+                theBoard[r2][c2].setCell(temp, r2, c2);
+                updateBoard();
+                return false;
+            }
         }
-        
-        // The copy is automatically destroyed, no need to restore anything
-        return isLegal;
+
     }
     else{
         return false;}

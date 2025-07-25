@@ -8,11 +8,10 @@
 #include "Cell.h"
 #include "AttackState.h"
 #include "Info.h"
+#include "GraphicsDisplay.h"
 
 
 class TextDisplay;
-
-class GraphicsDisplay;
 
 class Board {
     std::vector<std::vector<Cell>> theBoard;  // The actual board
@@ -42,6 +41,7 @@ public:
     void movePiece(int r1, int c1, int r2, int c2); // moves a piece on the board
     void updateBoard(); // calls all of the cells on the board to notify
     void setPiece(int r, int c, Piece p); // sets a piece on the board
+    int promotion(Colour turn);
     std::vector<Info> getPositions(); // gets the positions 
     std::pair<int, int> getKingPosition(Colour colour); // gets the position of the king of the given colour
     std::vector<Info> generateLegalMoves(int r, int c); // generates the legal moves for a given position
