@@ -1,8 +1,8 @@
 #include "GameState.h"
 
-void GameState::init(std::string startup, int n, int p1Bot, int p2Bot, Colour colour) {
+void GameState::init(std::string startup, int n, int p1Bot, int p2Bot, Colour colour, bool enableBonus) {
     currBoard = new Board(n);
-    currBoard->init(startup, n);
+    currBoard->init(startup, n, enableBonus);
     std::vector<Board*> history;
     playerTurn = colour;
     player1IsBot = p1Bot;
@@ -101,4 +101,8 @@ void GameState::setPlayerTurn(Colour colour) {
 
 Colour GameState::getPlayerTurn() {
     return playerTurn;
+}
+
+GameState::~GameState() {
+    delete currBoard;
 }

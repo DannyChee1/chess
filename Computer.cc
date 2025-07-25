@@ -48,17 +48,17 @@ GameState Computer::playMove(GameState *curr_state, int level) {
         if (legalMoves.empty()) {
             std::cerr << "No legal moves found" << std::endl;
             return *curr_state;
-        }
+        }   
         
         // Print all legal moves
-        std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
-        for (const auto &move : legalMoves) {
-            char fromFile = 'a' + move.fromCol;
-            char fromRank = '1' + move.fromRow;
-            char toFile = 'a' + move.toCol;
-            char toRank = '1' + move.toRow;
-            std::cout << "  " << fromFile << fromRank << " " << toFile << toRank << std::endl;
-        }
+        // std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
+        // for (const auto &move : legalMoves) {
+        //     char fromFile = 'a' + move.fromCol;
+        //     char fromRank = '1' + move.fromRow;
+        //     char toFile = 'a' + move.toCol;
+        //     char toRank = '1' + move.toRow;
+        //     std::cout << "  " << fromFile << fromRank << " " << toFile << toRank << std::endl;
+        // }
         
         // Mersenne Twister
         std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
@@ -72,8 +72,8 @@ GameState Computer::playMove(GameState *curr_state, int level) {
         char fromRank = '1' + selected.fromRow;
         char toFile = 'a' + selected.toCol;
         char toRank = '1' + selected.toRow;
-        std::cout << "Computer chooses: From (" << fromFile << " , " << fromRank << ") to ("
-        << toFile << " , " << toRank << ") type = move" << std::endl;
+        // std::cout << "Computer chooses: From (" << fromFile << " , " << fromRank << ") to ("
+        // << toFile << " , " << toRank << ") type = move" << std::endl;
         
         GameState new_state = *curr_state;
         new_state.move(selected.fromRow, selected.fromCol, selected.toRow, selected.toCol);
@@ -130,37 +130,37 @@ GameState Computer::playMove(GameState *curr_state, int level) {
             return *curr_state;
         }
 
-        std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
-        if (!priorityMoves.empty()) {
-            std::cout << "Priority moves:" << std::endl;
-            for (const auto &move : priorityMoves) {
-                char fromFile = 'a' + move.fromCol;
-                char fromRank = '1' + move.fromRow;
-                char toFile = 'a' + move.toCol;
-                char toRank = '1' + move.toRow;
-                std::string moveTypeStr;
-                switch(move.moveType) {
-                    case 0: moveTypeStr = "normal"; break;
-                    case 1: moveTypeStr = "capture"; break;
-                    case 2: moveTypeStr = "check"; break;
-                    case 3: moveTypeStr = "capture+check"; break;
-                    default: moveTypeStr = "unknown"; break;
-                }
-                std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
-                << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
-            }
-        }
-        if (!normalMoves.empty()) {
-            std::cout << "Normal moves:" << std::endl;
-            for (const auto& move : normalMoves) {
-                char fromFile = 'a' + move.fromCol;
-                char fromRank = '1' + move.fromRow;
-                char toFile = 'a' + move.toCol;
-                char toRank = '1' + move.toRow;
-                std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
-                << toFile << " , " << toRank << ") type = move" << std::endl;
-            }
-        }
+        // std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
+        // if (!priorityMoves.empty()) {
+        //     std::cout << "Priority moves:" << std::endl;
+        //     for (const auto &move : priorityMoves) {
+        //         char fromFile = 'a' + move.fromCol;
+        //         char fromRank = '1' + move.fromRow;
+        //         char toFile = 'a' + move.toCol;
+        //         char toRank = '1' + move.toRow;
+        //         std::string moveTypeStr;
+        //         switch(move.moveType) {
+        //             case 0: moveTypeStr = "normal"; break;
+        //             case 1: moveTypeStr = "capture"; break;
+        //             case 2: moveTypeStr = "check"; break;
+        //             case 3: moveTypeStr = "capture+check"; break;
+        //             default: moveTypeStr = "unknown"; break;
+        //         }
+        //         std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
+        //         << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
+        //     }
+        // }
+        // if (!normalMoves.empty()) {
+        //     std::cout << "Normal moves:" << std::endl;
+        //     for (const auto& move : normalMoves) {
+        //         char fromFile = 'a' + move.fromCol;
+        //         char fromRank = '1' + move.fromRow;
+        //         char toFile = 'a' + move.toCol;
+        //         char toRank = '1' + move.toRow;
+        //         std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
+        //         << toFile << " , " << toRank << ") type = move" << std::endl;
+        //     }
+        // }
         
         std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
         std::uniform_int_distribution<> distribution(0, legalMoves.size() - 1);
@@ -172,16 +172,16 @@ GameState Computer::playMove(GameState *curr_state, int level) {
         char fromRank = '1' + selected.fromRow;
         char toFile = 'a' + selected.toCol;
         char toRank = '1' + selected.toRow;
-        std::string moveTypeStr;
-        switch(selected.moveType) {
-            case 0: moveTypeStr = "normal"; break;
-            case 1: moveTypeStr = "capture"; break;
-            case 2: moveTypeStr = "check"; break;
-            case 3: moveTypeStr = "capture+check"; break;
-            default: moveTypeStr = "unknown"; break;
-        }
-        std::cout << "Computer chooses: From (" << fromFile << " , " << fromRank << ") to ("
-        << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
+        // std::string moveTypeStr;
+        // switch(selected.moveType) {
+        //     case 0: moveTypeStr = "normal"; break;
+        //     case 1: moveTypeStr = "capture"; break;
+        //     case 2: moveTypeStr = "check"; break;
+        //     case 3: moveTypeStr = "capture+check"; break;
+        //     default: moveTypeStr = "unknown"; break;
+        // }
+        // std::cout << "Computer chooses: From (" << fromFile << " , " << fromRank << ") to ("
+        // << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
         
         GameState new_state = *curr_state;
         new_state.move(selected.fromRow, selected.fromCol, selected.toRow, selected.toCol);
@@ -259,38 +259,38 @@ GameState Computer::playMove(GameState *curr_state, int level) {
             return *curr_state;
         }
 
-        std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
-        if (!priorityMoves.empty()) {
-            std::cout << "Priority moves:" << std::endl;
-            for (const auto &move : priorityMoves) {
-                char fromFile = 'a' + move.fromCol;
-                char fromRank = '1' + move.fromRow;
-                char toFile = 'a' + move.toCol;
-                char toRank = '1' + move.toRow;
-                std::string moveTypeStr;
-                switch(move.moveType) {
-                    case 0: moveTypeStr = "normal"; break;
-                    case 1: moveTypeStr = "capture"; break;
-                    case 2: moveTypeStr = "check"; break;
-                    case 3: moveTypeStr = "capture+check"; break;
-                    case 4: moveTypeStr = "avoiding_capture"; break;
-                    default: moveTypeStr = "unknown"; break;
-                }
-                std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
-                << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
-            }
-        }
-        if (!normalMoves.empty()) {
-            std::cout << "Normal moves:" << std::endl;
-            for (const auto& move : normalMoves) {
-                char fromFile = 'a' + move.fromCol;
-                char fromRank = '1' + move.fromRow;
-                char toFile = 'a' + move.toCol;
-                char toRank = '1' + move.toRow;
-                std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
-                << toFile << " , " << toRank << ") type = move" << std::endl;
-            }
-        }
+        // std::cout << "Legal moves for " << (computer_colour == Colour::White ? "White" : "Black") << ":" << std::endl;
+        // if (!priorityMoves.empty()) {
+        //     std::cout << "Priority moves:" << std::endl;
+        //     for (const auto &move : priorityMoves) {
+        //         char fromFile = 'a' + move.fromCol;
+        //         char fromRank = '1' + move.fromRow;
+        //         char toFile = 'a' + move.toCol;
+        //         char toRank = '1' + move.toRow;
+        //         std::string moveTypeStr;
+        //         switch(move.moveType) {
+        //             case 0: moveTypeStr = "normal"; break;
+        //             case 1: moveTypeStr = "capture"; break;
+        //             case 2: moveTypeStr = "check"; break;
+        //             case 3: moveTypeStr = "capture+check"; break;
+        //             case 4: moveTypeStr = "avoiding_capture"; break;
+        //             default: moveTypeStr = "unknown"; break;
+        //         }
+        //         std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
+        //         << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
+        //     }
+        // }
+        // if (!normalMoves.empty()) {
+        //     std::cout << "Normal moves:" << std::endl;
+        //     for (const auto& move : normalMoves) {
+        //         char fromFile = 'a' + move.fromCol;
+        //         char fromRank = '1' + move.fromRow;
+        //         char toFile = 'a' + move.toCol;
+        //         char toRank = '1' + move.toRow;
+        //         std::cout << "From (" << fromFile << " , " << fromRank << ") to ("
+        //         << toFile << " , " << toRank << ") type = move" << std::endl;
+        //     }
+        // }
 
         std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
         std::uniform_int_distribution<> distribution(0, legalMoves.size() - 1);
@@ -302,17 +302,17 @@ GameState Computer::playMove(GameState *curr_state, int level) {
         char fromRank = '1' + selected.fromRow;
         char toFile = 'a' + selected.toCol;
         char toRank = '1' + selected.toRow;
-        std::string moveTypeStr;
-        switch(selected.moveType) {
-            case 0: moveTypeStr = "normal"; break;
-            case 1: moveTypeStr = "capture"; break;
-            case 2: moveTypeStr = "check"; break;
-            case 3: moveTypeStr = "capture+check"; break;
-            case 4: moveTypeStr = "avoiding_capture"; break;
-            default: moveTypeStr = "unknown"; break;
-        }
-        std::cout << "Computer chooses: From (" << fromFile << " , " << fromRank << ") to ("
-        << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
+        // std::string moveTypeStr;
+        // switch(selected.moveType) {
+        //     case 0: moveTypeStr = "normal"; break;
+        //     case 1: moveTypeStr = "capture"; break;
+        //     case 2: moveTypeStr = "check"; break;
+        //     case 3: moveTypeStr = "capture+check"; break;
+        //     case 4: moveTypeStr = "avoiding_capture"; break;
+        //     default: moveTypeStr = "unknown"; break;
+        // }
+        // std::cout << "Computer chooses: From (" << fromFile << " , " << fromRank << ") to ("
+        // << toFile << " , " << toRank << ") type = " << moveTypeStr << std::endl;
         
         GameState new_state = *curr_state;
         new_state.move(selected.fromRow, selected.fromCol, selected.toRow, selected.toCol);

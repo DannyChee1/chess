@@ -14,8 +14,7 @@ class GameState {
     public:
     int player1IsBot; //0 implies human plyer, otherwise implies level of bot
     int player2IsBot;
-
-    void init(std::string startup, int n, int p1bot, int p2bot, Colour colour); //intializes game
+    void init(std::string startup, int n, int p1bot, int p2bot, Colour colour, bool enableBonus = false); //intializes game
     void switchTurn(); //switches turn
     bool move(int r1, int c1, int r2, int c2); //calls the move function on the board, first makes sure that this peice is colour of player who called for it
     char hasWon(); //returns the character w,b,s,n for who is winning in the current boardstate (w for white, b for black, s for stalemate, n for neither)
@@ -25,6 +24,7 @@ class GameState {
     void setPlayerTurn(Colour colour);
     void promotion(PieceType p);
     Colour getPlayerTurn();
+    ~GameState();
 }
 ;
 

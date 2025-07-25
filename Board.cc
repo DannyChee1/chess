@@ -35,6 +35,7 @@ rbk(other.rbk), cbk(other.cbk), lastMoveRow(other.lastMoveRow), lastMoveCol(othe
 Board &Board::operator=(const Board &other) {
     if (this != &other) {
         delete td;
+        delete gd;
         n = other.n;
         rwk = other.rwk;
         cwk = other.cwk;
@@ -57,11 +58,13 @@ Board::~Board(){
     delete gd;
 }
 
-void Board::init(std::string setupString, int n) {
+void Board::init(std::string setupString, int n, bool enableBonus) {
     this->n = n;
     theBoard.clear();
     theBoard.resize(n);
-    td = new TextDisplay(setupString, n);
+    delete td;
+    delete gd; 
+    td = new TextDisplay(setupString, n, enableBonus);
     gd = new GraphicsDisplay(n);
 
     for (int i = 0; i < this->n; i++) {

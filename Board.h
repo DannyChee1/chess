@@ -29,7 +29,7 @@ public:
     ~Board();
     Board& operator=(const Board& other); // Copy Assignment
 
-    void init(std::string setupString, int n);
+    void init(std::string setupString, int n, bool enableBonus = false);
     void clear(); // turns the board completely empty
     bool isMate(Colour turn); // checks if it was turn's move, would the game be in check/stale mate
     bool isCheck(Colour turn); // checks if turn is in check
