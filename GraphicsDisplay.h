@@ -4,11 +4,11 @@
 
 class GraphicsDisplay : public Observer {
     Xwindow xw;
-    size_t size;
+    int size;
     public:
-        static inline const int WINDOW_SIZE=500;
-        static inline const int GRID_SIZE=400;
-        static inline const int BORDER_SIZE=50;
-        GraphicsDisplay(size_t n);
+        static inline const int window_size=500;
+        static inline const int board_size=400;
+        static inline const int edge_size=50;
+        GraphicsDisplay(int n);
         void virtual notify(Subject &who) override;
 };

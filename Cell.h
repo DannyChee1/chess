@@ -11,6 +11,7 @@ class Cell : public Subject, public Observer {
     bool attackedByWhite;
     bool attackedByBlack;
     int r, c;
+    Observer * gobserve;
 
 public: 
     Cell(Piece p, int r, int c);
@@ -20,6 +21,8 @@ public:
     Info getInfo() const override;
     void resetAttack();
     void startNotify();
+    void gNotify();
+    void setGNotify(Observer * g);
 };
 
 #endif
