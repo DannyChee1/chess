@@ -23,7 +23,7 @@ void TextDisplay::notify(Subject &sender) {
     switch(temp.type) {
         case PieceType::Pawn: 
             if (temp.colour == Colour::Nothing)
-                display[row][col] = isDarkSquare ? '_' : ' ';
+                display[row][col] = isDarkSquare ? ' ' : '_';
             else if (temp.colour == Colour::Black)
                 display[row][col] = 'p';
             else if (temp.colour == Colour::White)
@@ -34,7 +34,7 @@ void TextDisplay::notify(Subject &sender) {
         
         case PieceType::Knight: 
             if (temp.colour == Colour::Nothing)
-                display[row][col] = isDarkSquare ? '_' : ' ';
+                display[row][col] = isDarkSquare ? ' ' : '_';
             else if (temp.colour == Colour::Black)
                 display[row][col] = 'n';
             else if (temp.colour == Colour::White)
@@ -45,7 +45,7 @@ void TextDisplay::notify(Subject &sender) {
         
         case PieceType::Bishop: 
             if (temp.colour == Colour::Nothing)
-                display[row][col] = isDarkSquare ? '_' : ' ';
+                display[row][col] = isDarkSquare ? ' ' : '_';
             else if (temp.colour == Colour::Black)
                 display[row][col] = 'b';
             else if (temp.colour == Colour::White)
@@ -56,7 +56,7 @@ void TextDisplay::notify(Subject &sender) {
         
         case PieceType::Rook: 
             if (temp.colour == Colour::Nothing)
-                display[row][col] = isDarkSquare ? '_' : ' ';
+                display[row][col] = isDarkSquare ? ' ' : '_';
             else if (temp.colour == Colour::Black)
                 display[row][col] = 'r';
             else if (temp.colour == Colour::White)
@@ -67,7 +67,7 @@ void TextDisplay::notify(Subject &sender) {
         
         case PieceType::Queen: 
             if (temp.colour == Colour::Nothing)
-                display[row][col] = isDarkSquare ? '_' : ' ';
+                display[row][col] = isDarkSquare ? ' ' : '_';
             else if (temp.colour == Colour::Black)
                 display[row][col] = 'q';
             else if (temp.colour == Colour::White)
@@ -78,7 +78,7 @@ void TextDisplay::notify(Subject &sender) {
         
         case PieceType::King: 
             if (temp.colour == Colour::Nothing)
-                display[row][col] = isDarkSquare ? '_' : ' ';
+                display[row][col] = isDarkSquare ? ' ' : '_';
             else if (temp.colour == Colour::Black)
                 display[row][col] = 'k';
             else if (temp.colour == Colour::White)
@@ -97,7 +97,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
             out << td.display[td.boardSize - i - 1][j];
         out << "\n";
     }
-    out << "  ";
+    out << "\n  ";
     for (int j = 0; j < td.boardSize; ++j)
         out << (char)('a' + j);
     out << "\n";
