@@ -37,7 +37,6 @@ bool GameState::move(int r1, int c1, int r2, int c2) {
         currBoard->updateGraphics();
         return true;
     } else {
-        std::cout << "illegal move, select a different move" << std::endl;
         return false;
     }
 }

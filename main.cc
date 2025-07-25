@@ -38,8 +38,12 @@ int main() {
         std::istringstream iss(line);
         if (iss >> command && command == "game" && iss >> player1 && iss >> player2) {
             bool whiteIsValid = false, blackIsValid = false;
-            if (player1 == "human") whiteIsValid = true;
-            if (player2 == "human") blackIsValid = true;
+            if (player1 == "human") {
+                whiteIsValid = true;
+                level1 = 0;}
+            if (player2 == "human") {
+                blackIsValid = true;
+                level2 = 0;}
             if (player1.length() == 11 && player1.substr(0, 8) == "computer" 
                 && player1[9] >= '1' && player1[9] <= '4') {
                 level1 = player1[9] - '0';

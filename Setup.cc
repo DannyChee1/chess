@@ -24,9 +24,11 @@ bool Setup::isValid() {
     if (bKingCount != 1 || wKingCount != 1){
         return false;
     }
-    //Board board{8};
-    //board.init(boardString, 8);
-    ///if (board.isCheck(Colour::Black) || board.isCheck(Colour::White)) return false;
+    Board* temp = new Board{8};
+    temp->init(boardString, 8);
+    if (temp->isCheck(Colour::Black) || temp->isCheck(Colour::White)) 
+        {return false;}
+    delete temp;
     for(int i = 0; i < 8; ++i){
         if(boardString[i] == 'p'){
             return false;

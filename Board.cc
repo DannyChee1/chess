@@ -151,6 +151,7 @@ void Board::init(std::string setupString, int n) {
             theBoard[i][j].setGNotify(gd);
         }
     }
+    updateBoard();
 }
 
 int Board::getDimension() {
@@ -805,7 +806,6 @@ bool Board::checkLegality(int r1, int c1, int r2, int c2, Colour turn){
                 return true;
 
             }else{
-                std::cout << "not legal position";
                 movePiece(r2,c2,r1,c1);
                 theBoard[r2][c2].setCell(temp, r2, c2);
                 updateBoard();
