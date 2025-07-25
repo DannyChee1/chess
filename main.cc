@@ -136,7 +136,7 @@ int main() {
                             game.promotion(PieceType::Knight);}
 
                     }
-                    game.printBoard();
+                    //game.printBoard();
                     
                     if(game.hasWon() == 'b'){
                         std::cout << "Black wins!";

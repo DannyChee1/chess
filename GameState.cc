@@ -67,6 +67,8 @@ char GameState::hasWon() {
     if (currBoard->isCheck(playerTurn)) {
         if (currBoard->isMate(playerTurn)) {
             return (playerTurn == Colour::Black) ? 'w' : 'b';
+        }else{
+            return 'n';
         }
     } else {
         if (currBoard->isMate(playerTurn))

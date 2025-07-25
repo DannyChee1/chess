@@ -73,7 +73,8 @@ void Xwindow::drawPawn(int x, int y, int colour) {
 }
 
 void Xwindow::drawKnight(int x, int y, int colour){
-  XFillRectangle(d, w, gc, x + 20, y + 30, 10, 20);
+    XSetForeground(d, gc, colours[colour]);
+    XFillRectangle(d, w, gc, x + 20, y + 30, 10, 20);
 
     XPoint points[] = {
         {x + 20, y + 30},
