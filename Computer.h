@@ -9,7 +9,7 @@ class Computer {
         Computer() = default;
         Computer(size_t level) : level(level) {}
         ~Computer();
-        GameState playMove(GameState *curr_state);
+        GameState playMove(GameState *curr_state, int level);
 };
 
 #endif

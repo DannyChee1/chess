@@ -18,7 +18,7 @@ bool isValidPromotionPiece(const std::string &piece) {
 }
 
 int main() {
-    std::string line, player1, player2, subsection,
+    std::string line, player1, player2, command,
     setupString = "RNBQKBNRPPPPPPPP--------------------------------pppppppprnbqkbnr";
     GameState game;
     bool gameStarted = false;
@@ -29,9 +29,7 @@ int main() {
     while (true) {
         std::getline(std::cin, line);
         std::istringstream iss(line);
-        if (iss >> subsection && subsection == "white-player" && iss >> player1 && 
-            iss >> subsection && subsection == "black-player" && iss >> player2) {
-                
+        if (iss >> command && command == "game" && iss >> player1 && iss >> player2) {
             bool whiteIsValid = false, blackIsValid = false;
             if (player1 == "human") whiteIsValid = true;
             if (player2 == "human") blackIsValid = true;
@@ -59,7 +57,7 @@ int main() {
             }
         }
 
-        else if (subsection == "move") {
+        else if (command == "move") {
             if (!gameStarted) {
                 std::cerr << "Game not initialized. Please set up players first." << std::endl;
                 continue;
@@ -77,8 +75,8 @@ int main() {
                     std::cerr << "Invalid command: computer turn only accepts 'move'" << std::endl;
                     continue;
                 }
-                if (game.getPlayerTurn() == Colour::White) game = computer1.playMove(&game);
-                else game = computer2.playMove(&game);
+                if (game.getPlayerTurn() == Colour::White) game = computer1.playMove(&game, level1);
+                else game = computer2.playMove(&game, level2);
                 game.printBoard();
             } 
             else {
