@@ -24,7 +24,7 @@ class GameState {
     void setPlayerTurn(Colour colour);
     void promotion(PieceType p);
     Colour getPlayerTurn();
-    ~GameState();
+    GameState();
 }
 ;
 

@@ -261,6 +261,8 @@ int main(int argc, char *argv[]) {
         else std::cerr << "Invalid command: " << line << std::endl;
     }
 
+        
+    delete game.getBoard();
     std::cout << "Final Score: \nWhite: " << whiteScore << "\nBlack: " << blackScore;
 
     
