@@ -16,7 +16,7 @@ bool isValidPromotionPiece(const std::string &piece) {
     return (p == 'Q' || p == 'R' || p == 'B' || p == 'K' || p == 'q' || p == 'r' || p == 'b' || p == 'k');
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     std::string line, player1, player2, command,
     setupString = "RNBQKBNRPPPPPPPP--------------------------------pppppppprnbqkbnr";
     std::string promotiontest = "--------p-----------K-------------k--------------------P--------";
@@ -28,6 +28,9 @@ int main() {
     double whiteScore = 0;
     bool playing = true;
     Colour setupColour = Colour::White;
+    bool enableBonus = false;
+    if (argc > 1 && std::string(argv[1]) == "-enablebonus")
+        enableBonus = true;
 
     // Main game loop starts here
     while (playing) {
@@ -56,7 +59,7 @@ int main() {
                 continue;
             }
             else { // game is valid and we can start
-                game.init(setupString, 8, level1, level2, setupColour);
+                game.init(setupString, 8, level1, level2, setupColour, enableBonus);
                 if (level1 != 0) computer1 = Computer(level1);
                 if (level2 != 0) computer2 = Computer(level2);
                 game.printBoard();
