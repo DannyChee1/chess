@@ -103,3 +103,7 @@ void GameState::setPlayerTurn(Colour colour) {
 Colour GameState::getPlayerTurn() {
     return playerTurn;
 }
+
+GameState::~GameState() {
+    delete currBoard;
+}
