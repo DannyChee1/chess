@@ -47,6 +47,7 @@ public:
     std::vector<Info> generateLegalMoves(int r, int c); // generates the legal moves for a given position
     Cell getCell(int r, int c); // gets a cell
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
+    void updateGraphics();
 };
 
 #endif

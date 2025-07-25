@@ -148,6 +148,15 @@ int Board::getDimension() {
     return n;
 }
 
+void Board::updateGraphics(){
+    for(int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            theBoard[i][j].gNotify();
+        }
+    }
+}
+
+
 bool Board::moveCheck(int r1, int c1, int r2, int c2, Colour turn) {
     if (r1 == r2 && c1 == c2)
         return false;

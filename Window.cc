@@ -9,20 +9,17 @@
 using namespace std;
 
 Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
-
   d = XOpenDisplay(NULL);
   if (d == NULL) {
     cerr << "Cannot open display" << endl;
     exit(1);
   }
   s = DefaultScreen(d);
-  w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, width, height, 1,
-                          BlackPixel(d, s), WhitePixel(d, s));
+  w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, width, height, 1, BlackPixel(d, s), WhitePixel(d, s));
   XSelectInput(d, w, ExposureMask | KeyPressMask);
   XMapRaised(d, w);
 
-  Pixmap pix = XCreatePixmap(d,w,width,
-        height,DefaultDepth(d,DefaultScreen(d)));
+  Pixmap pix = XCreatePixmap(d,w,width, height,DefaultDepth(d,DefaultScreen(d)));
   gc = XCreateGC(d, pix, 0,(XGCValues *)0);
 
   XFlush(d);
@@ -31,10 +28,10 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   // Set up colours.
   XColor xcolour;
   Colormap cmap;
-  char color_vals[5][10]={"white", "black", "red", "green", "blue"};
+  char color_vals[8][20]={"white", "black", "red", "green", "blue", "goldenrod","#ebecd0", "goldenrod"};
 
   cmap=DefaultColormap(d,DefaultScreen(d));
-  for(int i=0; i < 5; ++i) {
+  for(int i=0; i < 8; ++i) {
       XParseColor(d,cmap,color_vals[i],&xcolour);
       XAllocColor(d,cmap,&xcolour);
       colours[i]=xcolour.pixel;
@@ -68,7 +65,58 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
   XSetForeground(d, gc, colours[Black]);
 }
 
-void Xwindow::drawString(int x, int y, string msg) {
-  XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
+void Xwindow::drawPawn(int x, int y, int colour) {
+
+    XSetForeground(d, gc, colours[colour]);
+    XFillArc(d, w, gc, x + 12, y + 12, 20, 20, 0, 360*64);
+    XFillRectangle(d, w, gc, x + 20, y + 30, 10, 15);
 }
 
+void Xwindow::drawKnight(int x, int y, int colour){
+  XFillRectangle(d, w, gc, x + 20, y + 30, 10, 20);
+
+    XPoint points[] = {
+        {x + 20, y + 30},
+        {x + 25, y + 10},
+        {x + 35, y + 18},
+        {x + 30, y + 28}
+    };
+    XFillPolygon(d, w, gc, points, 4, Convex, CoordModeOrigin);
+
+    XFillRectangle(d, w, gc, x + 25, y + 10, 3, 6);
+}
+
+void Xwindow::drawBishop(int x, int y, int colour) {
+    XSetForeground(d, gc, colours[colour]);
+    XFillArc(d, w, gc, x + 20, y + 10, 10, 10, 0, 360 * 64);
+    XFillArc(d, w, gc, x + 15, y + 20, 20, 30, 0, 360 * 64);
+}
+
+void Xwindow::drawRook(int x, int y, int colour) {
+    XSetForeground(d, gc, colours[colour]);
+    XFillRectangle(d, w, gc, x + 12, y + 8, 6, 10);
+    XFillRectangle(d, w, gc, x + 22, y + 8, 6, 10);
+    XFillRectangle(d, w, gc, x + 32, y + 8, 6, 10);
+    XFillRectangle(d, w, gc, x + 15, y + 18, 20, 30);
+    XFillRectangle(d, w, gc, x + 12, y + 45, 26, 5);
+}
+
+void Xwindow::drawQueen(int x, int y, int colour) {
+  
+    XSetForeground(d, gc, colours[colour]);
+    XFillArc(d, w, gc, x + 15, y + 8, 5, 5, 0, 360 * 64);
+    XFillArc(d, w, gc, x + 23, y + 5, 5, 5, 0, 360 * 64);
+    XFillArc(d, w, gc, x + 31, y + 8, 5, 5, 0, 360 * 64);
+    XFillArc(d, w, gc, x + 17, y + 15, 16, 16, 0, 360 * 64);
+    XFillArc(d, w, gc, x + 13, y + 30, 24, 20, 0, 360 * 64);
+}
+
+void Xwindow::drawKing(int x, int y, int colour) {
+
+    XSetForeground(d, gc, colours[colour]);
+    XFillArc(d, w, gc, x + 20, y + 10, 10, 10, 0, 360 * 64);
+    XDrawLine(d, w, gc, x + 25, y + 5, x + 25, y + 15);
+    XDrawLine(d, w, gc, x + 22, y + 10, x + 28, y + 10);
+    XFillRectangle(d, w, gc, x + 20, y + 20, 10, 25);
+    XFillArc(d, w, gc, x + 15, y + 43, 20, 5, 0, 360 * 64);
+}

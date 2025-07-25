@@ -52,6 +52,14 @@ void Cell::startNotify(){
 
 }
 
+void Cell::gNotify(){
+    gobserve->notify(*this);
+}
+
+void Cell::setGNotify(Observer * g){
+    gobserve = g;
+}
+
 void Cell::notify(Subject &sender) {
     Info temp = sender.getInfo();
     AttackState stateTemp = sender.getAttackState();
@@ -60,7 +68,7 @@ void Cell::notify(Subject &sender) {
     if (stateTemp.colour == Colour::Nothing){
         return;
     }
-    
+
     if (this->currentPiece.colour == Colour::Nothing) {
         if (stateTemp.type == PieceType::Pawn) {
             if (stateTemp.colour == Colour::Black) {
