@@ -5,7 +5,7 @@
 #include <vector>
 
 Computer::~Computer() {
-    delete gameState;
+    //delete gameState;
 }
 
 GameState Computer::playMove(GameState *curr_state, int level) {
