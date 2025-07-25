@@ -54,6 +54,7 @@ Board &Board::operator=(const Board &other) {
 Board::~Board(){
     theBoard.clear();
     delete td;
+    delete gd;
 }
 
 void Board::init(std::string setupString, int n) {
