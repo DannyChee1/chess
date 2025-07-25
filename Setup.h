@@ -7,17 +7,23 @@
 #include "Observer.h"
 #include "GameState.h"
 
-class Setup {
-    std::string boardString;
-    Colour startingColour;
+class Setup{
+    std::string boardString = "RNBQKBNRPPPPPPPP--------------------------------pppppppprnbqkbnr" ;
+    Colour startingColour = Colour::White;
 
 public:
-    std::string clear();
+    void clear();
     bool isValid();
-    std::string place(Piece placedPiece, std::string board, size_t row, size_t column);
-    std::string remove(std::string board, size_t row, size_t column);
-    std::string defaultSetup();
+    void place(char piece, int row, int column);
+    void remove(int row, int column);
+    void defaultSetup();
     void setColour(Colour colour);
+    std::string returnSetup();
+    Colour returnColour();
+    friend std::ostream &operator<<(std::ostream &out, Setup &set);
 };
+
+std::ostream &operator<<(std::ostream &out, Setup &set);
+
 
 #endif

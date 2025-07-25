@@ -12,7 +12,9 @@ bool isValidCoordinate(const std::string &coord) {
 }
 
 bool isValidPromotionPiece(const std::string &piece) {
+    //if (piece.length() != 1) return false;
     char p = piece[0];
+    std::cout << p;
     return (p == 'Q' || p == 'R' || p == 'B' || p == 'K' || p == 'q' || p == 'r' || p == 'b' || p == 'k');
 }
 
@@ -24,16 +26,13 @@ int main() {
     bool gameStarted = false;
     int level1 = 0, level2 = 0;
     Computer computer1, computer2;
-    double blackScore = 0;
-    double whiteScore = 0;
-    bool playing = true;
+    int bScore =  0;
+    int whiteScore = 0;
+    Colour setupColour;
 
     // Main game loop starts here
-    while (playing) {
+    while (true) {
         std::getline(std::cin, line);
-        if(std::cin.eof()){
-            playing = false;
-        }
         std::istringstream iss(line);
         if (iss >> command && command == "game" && iss >> player1 && iss >> player2) {
             bool whiteIsValid = false, blackIsValid = false;
@@ -55,7 +54,7 @@ int main() {
                 continue;
             }
             else { // game is valid and we can start
-                game.init(setupString, 8, level1, level2);
+                game.init(setupString, 8, level1, level2, setupColour);
                 if (level1 != 0) computer1 = Computer(level1);
                 if (level2 != 0) computer2 = Computer(level2);
                 game.printBoard();
@@ -122,6 +121,7 @@ int main() {
                 int c2 = newTile[0] - 'a';
 
 
+                // TODO: Handle promotion logic.
 
                 if (game.move(r1, c1, r2, c2)){
                     if(hasPromotion == true){
@@ -133,57 +133,95 @@ int main() {
                             game.promotion(PieceType::Bishop);
                         }else {
                             game.promotion(PieceType::Knight);}
-
                     }
                     game.printBoard();
-                    
-                    if(game.hasWon() == 'b'){
-                        std::cout << "Black wins!";
-                        gameStarted = false;
-                        ++blackScore; 
-                    }else if(game.hasWon() == 'w'){
-                        std::cout << "White wins!";
-                        gameStarted = false;
-                        ++whiteScore; 
-                    }else if(game.hasWon() == 's'){
-                        std::cout << "Stalemate ...";
-                        gameStarted = false;
-                        whiteScore = whiteScore + 0.5; 
-                        blackScore = blackScore + 0.5; 
-                    }
-                    
-                }
-                else std::cerr << "Not A Legal Move" << std::endl;
+                    std::cout << game.hasWon();
+
+                }else std::cerr << "bad move" << std::endl;
                 
             }
         }
-        else if (line == "resign") {
+        else if (command == "resign") {
             if (!gameStarted) {
                 std::cerr << "Game not initialized" << std::endl;
                 continue;
             }
-            else{
-                if(game.getPlayerTurn() == Colour::White){
-                    std::cout << "White resigns! \n";
-                    std::cout << "Black wins! \n";
-                    gameStarted = false;
-                    ++blackScore;
-                    
-                }else{
-                    std::cout << "Black resigns! \n";
-                    std::cout << "White wins! \n";
-                    gameStarted = false;
-                    ++whiteScore;
-
-                }
-            }
-            
+            // TODO: Implement resign logic
+            std::cout << "Resign not yet implemented" << std::endl;
         }
+        else if (command == "setup"){
+            if(!gameStarted){
+            bool setup = true;
+            Setup temp;
+            while(setup){
+                
+                std::getline(std::cin, line);
+                std::istringstream iss(line);
+
+                std::string command;
+                std::string cmd2;
+                std::string cmd3;
+                if(iss >> command){
+                    if(command == "+"){
+                        if(iss >> cmd2){
+                            if(cmd2[0] == 'P' ||cmd2[0] == 'p' ||cmd2[0] == 'R' ||cmd2[0] == 'r' ||cmd2[0] == 'B' ||cmd2[0] == 'b' ||cmd2[0] == 'Q' ||cmd2[0] == 'q' ||cmd2[0] == 'N' ||cmd2[0] == 'n' ||cmd2[0] == 'k' || cmd2[0] == 'K'){
+                            if(iss >> cmd3){
+                                int r1 = cmd3[1] - '1';
+                                int c1 = cmd3[0] - 'a';
+                                temp.place(cmd2[0], r1,c1);
+                                std::cout << temp;
+
+                            }else{
+                                std::cerr << "bad command \n" ;
+
+                            }
+                        }
+                        }else{
+                                std::cerr << "bad command \n" ;
+
+                            }
+
+
+                    }else if(command == "-"){
+                        if(iss >> cmd2){
+                            int r1 = cmd2[1] - '1';
+                            int c1 = cmd2[0] - 'a';
+                            temp.remove(r1,c1);
+                            std::cout << temp;
+                    }else{
+                        std::cerr << "error";
+                    }
+                }else if(command == "="){
+                    if(iss >> cmd2){
+                        if(cmd2 == "white" || cmd2 == "White"){
+                            temp.setColour(Colour::White);
+                        }else if(cmd2 == "black" || cmd2 == "Black"){
+                            temp.setColour(Colour::Black);
+                        }else{
+                            std::cerr << "not black or white";
+                    }
+                }
+
+
+                }else if(command == "done"){
+                    if(temp.isValid()){
+                        
+                        setupColour = temp.returnColour();
+                        setupString = temp.returnSetup();
+                        setup = false;
+                    }else{
+                        std::cerr<<"not valid board";
+                    }
+                }else{
+                    std::cerr <<"not a command";
+                }
+
+        }}
+        }else{
+            std::cerr << "cannot call setup in a game";
+        }
+    }
 
         else std::cerr << "Invalid command: " << line << std::endl;
     }
-
-    std::cout << "Final Score: \nWhite: " << whiteScore << "\nBlack: " << blackScore;
-
-    
 }

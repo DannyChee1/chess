@@ -1,10 +1,10 @@
 #include "GameState.h"
 
-void GameState::init(std::string startup, int n, int p1Bot, int p2Bot) {
+void GameState::init(std::string startup, int n, int p1Bot, int p2Bot, Colour colour) {
     currBoard = new Board(n);
     currBoard->init(startup, n);
     std::vector<Board*> history;
-    playerTurn = Colour::White;
+    playerTurn = colour;
     player1IsBot = p1Bot;
     player2IsBot = p2Bot;
 }
