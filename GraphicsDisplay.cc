@@ -21,8 +21,12 @@ void GraphicsDisplay::notify(Subject &sender){
     int column=sender.getInfo().col;
     int row=sender.getInfo().row;
     int cellDim = board_size/size;
-    std::cout << sender.getInfo().col << " " << sender.getInfo().col << " " ;
 
+    if ((column + row) % 2 == 0){
+            xw.fillRectangle(edge_size + column * cellDim, edge_size + (7 - row) * cellDim, cellDim, cellDim, Xwindow::Brown);
+        }else{
+            xw.fillRectangle(edge_size + column * cellDim, edge_size + (7 - row) * cellDim, cellDim, cellDim, Xwindow::ChessWhite);
+        }
     
     if(sender.getInfo().curPiece.colour == Colour::White){
         switch(sender.getInfo().curPiece.type){
@@ -68,13 +72,7 @@ void GraphicsDisplay::notify(Subject &sender){
         }
     
     }
-    else{
-        if ((column + row) % 2 == 0){
-            xw.fillRectangle(edge_size + column * cellDim, edge_size + (7 - row) * cellDim, cellDim, cellDim, Xwindow::Brown);
-        }else{
-            xw.fillRectangle(edge_size + column * cellDim, edge_size + (7 - row) * cellDim, cellDim, cellDim, Xwindow::ChessWhite);
-        }
-    }
+    
     
 
 }
