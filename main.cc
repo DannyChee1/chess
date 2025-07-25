@@ -27,7 +27,7 @@ int main() {
     double blackScore = 0;
     double whiteScore = 0;
     bool playing = true;
-    Colour setupColour;
+    Colour setupColour = Colour::White;
 
     // Main game loop starts here
     while (playing) {
@@ -214,8 +214,8 @@ int main() {
 
                     }else if(command == "-"){
                         if(iss >> cmd2){
-                            int r1 = cmd3[1] - '1';
-                            int c1 = cmd3[0] - 'a';
+                            int r1 = cmd2[1] - '1';
+                            int c1 = cmd2[0] - 'a';
                             temp.remove(r1,c1);
                             std::cout << temp;
                     }else{

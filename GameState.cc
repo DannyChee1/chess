@@ -88,6 +88,7 @@ void GameState::rewind(int turns) {
 void GameState::printBoard() {
     currBoard->updateBoard();
     std::cout << *currBoard;
+    currBoard->updateGraphics();
 }
 
 Board* GameState::getBoard() {
