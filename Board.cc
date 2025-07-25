@@ -20,6 +20,30 @@ Board::Board(int n) : n{n} {
     td = nullptr;
 } 
 
+Board::Board(const Board& other) : n(other.n), rwk(other.rwk), cwk(other.cwk), 
+rbk(other.rbk), cbk(other.cbk), lastMoveRow(other.lastMoveRow), lastMoveCol(other.lastMoveCol) {
+    theBoard = other.theBoard;
+    if (other.td) td = new TextDisplay(*other.td);
+    else td = nullptr;
+}
+
+Board &Board::operator=(const Board &other) {
+    if (this != &other) {
+        delete td;
+        n = other.n;
+        rwk = other.rwk;
+        cwk = other.cwk;
+        rbk = other.rbk;
+        cbk = other.cbk;
+        lastMoveRow = other.lastMoveRow;
+        lastMoveCol = other.lastMoveCol;
+        theBoard = other.theBoard;
+        if (other.td) td = new TextDisplay(*other.td);
+        else td = nullptr;
+    }
+    return *this;
+}
+
 Board::~Board(){
     theBoard.clear();
     delete td;
@@ -696,16 +720,10 @@ bool Board::legalBoard(Colour turn){
 }
 
 bool Board::isCheck(Colour turn){
-    if (turn == Colour::Black){
-
-        return !(theBoard[rbk][cbk].getInfo().aWhite);
-    
-    }else{
-        return !(theBoard[rwk][cwk].getInfo().aBlack);
-        
-    }
-} 
-
+    if (turn == Colour::Black)
+        return (theBoard[rbk][cbk].getInfo().aWhite);
+    return (theBoard[rwk][cwk].getInfo().aBlack);
+}
 
 void Board::movePiece(int r1, int c1, int r2, int c2){
 
@@ -731,37 +749,22 @@ void Board::movePiece(int r1, int c1, int r2, int c2){
 //checks the legality of a potential future move.
 bool Board::checkLegality(int r1, int c1, int r2, int c2, Colour turn){
     if (moveCheck(r1,c1,r2,c2,turn)){
-        Piece temp = theBoard[r2][c2].getInfo().curPiece; 
-        movePiece(r1,c1,r2,c2);
+        // Create a copy of the board to test the move
+        Board testBoard = *this;
+        
+        // Make the move on the copy
+        testBoard.movePiece(r1, c1, r2, c2);
+        
+        // Check if the resulting position is legal
+        bool isLegal;
         if (turn == Colour::Black){
-            if(legalBoard(Colour::White)){
-                movePiece(r2,c2,r1,c1);
-                theBoard[r2][c2].setCell(temp, r2, c2);
-                updateBoard();
-                return true;
-
-            }else{
-                movePiece(r2,c2,r1,c1);
-                theBoard[r2][c2].setCell(temp, r2, c2);
-                updateBoard();
-                return false;
-            }
-        } else{
-
-            if(legalBoard(Colour::Black)){
-                movePiece(r2,c2,r1,c1);
-                theBoard[r2][c2].setCell(temp, r2, c2);
-                updateBoard();
-                return true;
-
-            }else{
-                movePiece(r2,c2,r1,c1);
-                theBoard[r2][c2].setCell(temp, r2, c2);
-                updateBoard();
-                return false;
-            }
+            isLegal = testBoard.legalBoard(Colour::White);
+        } else {
+            isLegal = testBoard.legalBoard(Colour::Black);
         }
-
+        
+        // The copy is automatically destroyed, no need to restore anything
+        return isLegal;
     }
     else{
         return false;}

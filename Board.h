@@ -26,7 +26,9 @@ public:
     int lastMoveRow = 0;
     int lastMoveCol = 0;
     Board(int n);
+    Board(const Board& other); // Copy constructor
     ~Board();
+    Board& operator=(const Board& other); // Copy Assignment
 
     void init(std::string setupString, int n);
     void clear(); // turns the board completely empty
